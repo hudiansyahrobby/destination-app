@@ -1,4 +1,7 @@
-const { Router } = require('express');
+const { Router } = require("express");
+const isValid = require("../middlewares/isValid");
+const authValidation = require("../validations/auth");
+
 // const passport = require('passport');
 
 const {
@@ -6,17 +9,17 @@ const {
   login,
   register,
   logout,
-} = require('../controllers/auth');
+} = require("../controllers/auth");
 
 const router = Router();
 
-router.post('/login', login);
+router.post("/login", isValid(authValidation.login, "body"), login);
 
-router.post('/signup', register);
+router.post("/signup", isValid(authValidation.signup, "body"), register);
 
-router.post('/logout', logout);
+router.post("/logout", logout);
 
-router.post('/refresh-token', generateRefreshToken);
+router.post("/refresh-token", generateRefreshToken);
 
 // Google Auth
 // router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));

@@ -1,23 +1,27 @@
-const { User } = require('../models');
-const bcrypt = require('bcryptjs');
+const { User } = require("../models");
+const bcrypt = require("bcryptjs");
 // const nodemailer = require('nodemailer');
 // const sendGridTransport = require('nodemailer-sendgrid-transport');
 // const { Op } = require('sequelize');
 
-const { getToken } = require('../helpers/getToken');
+const { getToken } = require("../helpers/getToken");
 
 exports.register = async (req, res) => {
   const { email, name, password, password2 } = req.body;
   try {
     const user = await User.findOne({ where: { email } });
     if (user) {
-      return res.status(400).json({ message: 'This is email has been registered' });
+      return res
+        .status(400)
+        .json({ message: "This is email has been registered" });
     }
 
     if (password !== password2) {
       return res
         .status(400)
-        .json({ message: 'Password and confirmation password are not similar' });
+        .json({
+          message: "Password and confirmation password are not similar",
+        });
     }
 
     const newUser = {
@@ -28,7 +32,7 @@ exports.register = async (req, res) => {
     // Create new user if not exist in DB
     await User.create(newUser);
 
-    return res.status(201).json({ message: 'User successfully registered' });
+    return res.status(201).json({ message: "User successfully registered" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -41,28 +45,32 @@ exports.login = async (req, res, next) => {
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
-      return res.status(400).json({ message: 'Email or Password is not valid' });
+      return res
+        .status(400)
+        .json({ message: "Email or Password is not valid" });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(400).json({ message: 'Email or Password is not valid' });
+      return res
+        .status(400)
+        .json({ message: "Email or Password is not valid" });
     }
 
     const payload = { id: user.id };
     const accessToken = getToken(
       payload,
       process.env.ACCESS_TOKEN_SECRET,
-      process.env.ACCESS_TOKEN_LIFE,
+      process.env.ACCESS_TOKEN_LIFE
     );
     const refreshToken = getToken(
       payload,
       process.env.REFRESH_TOKEN_SECRET,
-      process.env.REFRESH_TOKEN_LIFE,
+      process.env.REFRESH_TOKEN_LIFE
     );
 
-    res.cookie('jwt', refreshToken, { httpOnly: true });
+    res.cookie("jwt", refreshToken, { httpOnly: true });
 
     res.status(200).json({ results: { accessToken } });
   } catch (error) {
@@ -76,14 +84,14 @@ exports.generateRefreshToken = async (req, res) => {
     const { jwt: refreshToken } = req.cookies;
     //send error if no refreshToken is sent
     if (!refreshToken) {
-      return res.status(403).json({ message: 'Access denied,token missing!' });
+      return res.status(403).json({ message: "Access denied,token missing!" });
     } else {
       //query for the token to check if it is valid:
       const user = await User.findOne({ where: { refreshToken } });
 
       //send error if no token found:
       if (!user) {
-        return res.status(401).json({ message: 'Token expired or invalid!' });
+        return res.status(401).json({ message: "Token expired or invalid!" });
       } else {
         //extract payload from refresh token and generate a new access token and send it
         const payload = { id: user.id };
@@ -91,12 +99,12 @@ exports.generateRefreshToken = async (req, res) => {
         const accessToken = getToken(
           payload,
           process.env.ACCESS_TOKEN_SECRET,
-          process.env.ACCESS_TOKEN_LIFE,
+          process.env.ACCESS_TOKEN_LIFE
         );
         const refreshToken = getToken(
           payload,
           process.env.REFRESH_TOKEN_SECRET,
-          process.env.REFRESH_TOKEN_LIFE,
+          process.env.REFRESH_TOKEN_LIFE
         );
 
         // Save new refresh token to DB
@@ -104,7 +112,7 @@ exports.generateRefreshToken = async (req, res) => {
         await user.save();
 
         // Send new Cookie
-        res.cookie('jwt', refreshToken, { httpOnly: true });
+        res.cookie("jwt", refreshToken, { httpOnly: true });
 
         return res.status(200).json({ results: { accessToken } });
       }
@@ -115,8 +123,8 @@ exports.generateRefreshToken = async (req, res) => {
 };
 
 exports.logout = async (req, res, next) => {
-  res.clearCookie('jwt');
-  return res.status(200).json({ message: 'Succesfully Sign out' });
+  res.clearCookie("jwt");
+  return res.status(200).json({ message: "Succesfully Sign out" });
 };
 
 // exports.postResetPassword = async (req, res, next) => {

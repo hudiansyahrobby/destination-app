@@ -7,7 +7,12 @@ const Navbar: React.FC = () => {
     <Flex
       py="4"
       px="8"
+      position="fixed"
       boxShadow="md"
+      zIndex={50}
+      width="full"
+      bgColor="white"
+      top="0"
       alignItems="center"
       justifyContent="space-between"
     >
