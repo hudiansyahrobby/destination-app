@@ -7,21 +7,13 @@ const bcrypt = require("bcryptjs");
 const { getToken } = require("../helpers/getToken");
 
 exports.register = async (req, res) => {
-  const { email, name, password, password2 } = req.body;
+  const { email, name, password } = req.body;
   try {
     const user = await User.findOne({ where: { email } });
     if (user) {
       return res
         .status(400)
         .json({ message: "This is email has been registered" });
-    }
-
-    if (password !== password2) {
-      return res
-        .status(400)
-        .json({
-          message: "Password and confirmation password are not similar",
-        });
     }
 
     const newUser = {
