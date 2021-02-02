@@ -10,8 +10,8 @@
     "pretest": "cross-env NODE_ENV=test npm run migrate:reset",
     "migrate": "npx sequelize-cli db:migrate",
     "migrate:reset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
-    "seed" : "npx sequelize-cli db:seed:all",
-    "seed-reset" : "npx sequelize-cli db:seed:undo:all && npm run seed"
+    "seed": "npx sequelize-cli db:seed:all",
+    "seed-reset": "npx sequelize-cli db:seed:undo:all && npm run seed"
   },
   "keywords": [],
   "author": "",

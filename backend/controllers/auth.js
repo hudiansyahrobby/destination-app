@@ -7,7 +7,8 @@ const bcrypt = require("bcryptjs");
 const { getToken } = require("../helpers/getToken");
 
 exports.register = async (req, res) => {
-  const { email, name, password } = req.body;
+  const { email, name, password, isAdmin } = req.body;
+
   try {
     const user = await User.findOne({ where: { email } });
     if (user) {
@@ -19,6 +20,7 @@ exports.register = async (req, res) => {
       name,
       email,
       password,
+      isAdmin,
     };
 
     //Create new user if not exist in DB

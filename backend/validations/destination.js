@@ -2,15 +2,11 @@ const Joi = require("joi");
 
 const destination = {
   create: Joi.object().keys({
-    name: Joi.string()
-      .pattern(/^[a-zA-Z ]*$/)
-      .required()
-      .messages({
-        "string.base": `name should be a type of string`,
-        "string.empty": `name cannot be an empty field`,
-        "string.pattern.base": `name should only contain alphapet or space`,
-        "any.required": `name is a required field`,
-      }),
+    name: Joi.string().required().messages({
+      "string.base": `name should be a type of string`,
+      "string.empty": `name cannot be an empty field`,
+      "any.required": `name is a required field`,
+    }),
 
     city: Joi.string()
       .pattern(/^[a-zA-Z ]*$/)
@@ -37,6 +33,11 @@ const destination = {
       "string.empty": `description cannot be an empty field`,
       "string.min": "description shoult be at least 50 characters",
       "any.required": `description is a required field`,
+    }),
+    image: Joi.string().required().messages({
+      "string.base": `image should be a type of string`,
+      "string.empty": `image cannot be an empty field`,
+      "any.required": `image is a required field`,
     }),
   }),
 };

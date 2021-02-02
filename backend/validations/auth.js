@@ -17,6 +17,7 @@ const auth = {
       "string.email": "email is not valid",
       "any.required": `email is a required field`,
     }),
+    isAdmin: Joi.boolean(),
     password: Joi.string()
       .min(8)
       .pattern(

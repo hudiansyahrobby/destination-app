@@ -1,7 +1,8 @@
 const { Router } = require("express");
 
-const router = Router();
-
+const destinationValidation = require("../validations/destination");
+const { verifyUser, verifyAdmin } = require("../middlewares/userAuth");
+const isValid = require("../middlewares/isValid");
 const {
   create,
   get,
@@ -9,15 +10,28 @@ const {
   update,
   remove,
 } = require("../controllers/destination");
-const { verifyUser, verifyAdmin } = require("../middlewares/userAuth");
 
-router.post("/destinations", verifyUser, verifyAdmin, create);
+const router = Router();
+
+router.post(
+  "/destinations",
+  verifyUser,
+  verifyAdmin,
+  isValid(destinationValidation.create, "body"),
+  create
+);
 
 router.get("/destinations", get);
 
 router.get("/destinations/:id", getDetail);
 
-router.put("/destinations/:id", verifyUser, verifyAdmin, update);
+router.put(
+  "/destinations/:id",
+  verifyUser,
+  verifyAdmin,
+  isValid(destinationValidation, "body"),
+  update
+);
 
 router.delete("/destinations/:id", verifyUser, verifyAdmin, remove);
 
