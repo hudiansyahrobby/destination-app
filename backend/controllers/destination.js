@@ -60,7 +60,7 @@ exports.get = async (req, res) => {
 
 exports.getDetail = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
+
   try {
     const destination = await Destination.findByPk(id);
 
