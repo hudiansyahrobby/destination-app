@@ -15,15 +15,14 @@ exports.register = async (req, res) => {
         .status(400)
         .json({ message: "This is email has been registered" });
     }
-
     const newUser = {
       name,
       email,
       password,
     };
-    // Create new user if not exist in DB
-    await User.create(newUser);
 
+    //Create new user if not exist in DB
+    await User.create(newUser);
     return res.status(201).json({ message: "User successfully registered" });
   } catch (error) {
     return res.status(500).json({ message: error.message });

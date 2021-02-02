@@ -6,6 +6,7 @@ const compression = require("compression");
 const helmet = require("helmet");
 
 const authRoute = require("./routes/auth");
+const destinationRoute = require("./routes/destination");
 
 require("dotenv").config();
 
@@ -31,5 +32,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(logger("dev"));
 
 app.use("/api/v1", authRoute);
+app.use("/api/v1", destinationRoute);
 
 module.exports = app;
