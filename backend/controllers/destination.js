@@ -1,8 +1,12 @@
+const { Op } = require("sequelize");
+const fs = require("fs");
+
 const { getPagination } = require("../helpers/getPagination");
 const { getPaginationData } = require("../helpers/getPaginationData");
 const { getSort } = require("../helpers/getSort");
 const { Destination } = require("../models");
-const { Op } = require("sequelize");
+const { uploadToCloudinary } = require("../helpers/initCloudinary");
+const { deleteImages } = require("../helpers/deleteImages");
 
 exports.create = async (req, res) => {
   const { name, city, province, description, images } = req.body;
@@ -12,7 +16,18 @@ exports.create = async (req, res) => {
     });
 
     if (destination) {
+      deleteImages(images);
       return res.status(400).json({ message: "Destination is exist" });
+    }
+
+    // Upload and Delete Images
+    const imageURLs = [];
+    const files = images;
+    for (const file of files) {
+      const path = `public/${file}`;
+      const newPath = await uploadToCloudinary(path);
+      imageURLs.push(newPath);
+      fs.unlinkSync(path);
     }
 
     const newDestination = {
@@ -20,7 +35,7 @@ exports.create = async (req, res) => {
       city,
       province,
       description,
-      images,
+      images: imageURLs,
     };
 
     await Destination.create(newDestination);
@@ -29,6 +44,7 @@ exports.create = async (req, res) => {
       .status(201)
       .json({ message: "Destination has successsfully created" });
   } catch (error) {
+    deleteImages(images);
     return res.status(500).json({ message: error.message });
   }
 };

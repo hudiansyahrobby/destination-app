@@ -11,7 +11,6 @@ exports.uploadImages = (req, res, next) => {
           .json({ message: "Too many files to upload. Max is 5 images" });
       }
     } else if (err) {
-      console.log("ERR", err);
       return res.status(400).json({ message: err });
     }
 
