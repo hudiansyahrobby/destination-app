@@ -5,8 +5,12 @@ const { getPagination } = require("../helpers/getPagination");
 const { getPaginationData } = require("../helpers/getPaginationData");
 const { getSort } = require("../helpers/getSort");
 const { Destination } = require("../models");
-const { uploadToCloudinary } = require("../helpers/initCloudinary");
+const {
+  uploadToCloudinary,
+  deleteImageOnCloudinary,
+} = require("../helpers/initCloudinary");
 const { deleteImages } = require("../helpers/deleteImages");
+const { getPublicId } = require("../helpers/getPublicId");
 
 exports.create = async (req, res) => {
   const { name, city, province, description, images } = req.body;
@@ -21,12 +25,12 @@ exports.create = async (req, res) => {
     }
 
     // Upload and Delete Images
-    const imageURLs = [];
+    const imageURL = [];
     const files = images;
     for (const file of files) {
       const path = `public/${file}`;
       const newPath = await uploadToCloudinary(path);
-      imageURLs.push(newPath);
+      imageURL.push(newPath);
       fs.unlinkSync(path);
     }
 
@@ -35,7 +39,7 @@ exports.create = async (req, res) => {
       city,
       province,
       description,
-      images: imageURLs,
+      images: imageURL,
     };
 
     await Destination.create(newDestination);
@@ -90,17 +94,44 @@ exports.getDetail = async (req, res) => {
 };
 exports.update = async (req, res) => {
   const { id } = req.params;
+  const { name, city, province, description, images } = req.body;
 
   try {
-    const [updated] = await Destination.update(req.body, {
+    const destination = await Destination.findByPk(id);
+
+    if (!destination) {
+      return res.status(400).json({ message: "Destination not found" });
+    }
+
+    // Delete images on Cloudinary
+    const public_ids = getPublicId(destination.images);
+
+    for (const public_id of public_ids) {
+      await deleteImageOnCloudinary(public_id);
+    }
+
+    // Reupload images on cloudinary
+
+    const imageURL = [];
+    const files = images;
+    for (const file of files) {
+      const path = `public/${file}`;
+      const newPath = await uploadToCloudinary(path);
+      imageURL.push(newPath);
+      fs.unlinkSync(path);
+    }
+
+    const updatedDestination = {
+      name,
+      city,
+      province,
+      description,
+      images: imageURL,
+    };
+
+    await Destination.update(updatedDestination, {
       where: { id },
     });
-
-    if (!updated) {
-      return res
-        .status(400)
-        .json({ message: "Error updating, destination not found" });
-    }
 
     return res
       .status(400)
@@ -114,14 +145,22 @@ exports.remove = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const destination = await Destination.destroy({
-      where: { id },
-    });
+    const destination = await Destination.findByPk(id);
 
     if (!destination) {
       return res
         .status(400)
         .json({ message: "Error deleting, destination not found" });
+    }
+
+    const public_ids = getPublicId(destination.images);
+
+    await Destination.destroy({
+      where: { id },
+    });
+
+    for (const public_id of public_ids) {
+      await deleteImageOnCloudinary(public_id);
     }
 
     return res

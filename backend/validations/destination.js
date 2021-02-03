@@ -1,7 +1,7 @@
 const Joi = require("joi");
 
 const destination = {
-  create: Joi.object().keys({
+  destination: Joi.object().keys({
     name: Joi.string().required().messages({
       "string.base": `name should be a type of string`,
       "string.empty": `name cannot be an empty field`,

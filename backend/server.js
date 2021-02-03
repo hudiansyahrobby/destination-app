@@ -4,6 +4,7 @@ const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const compression = require("compression");
 const helmet = require("helmet");
+const bodyParser = require("body-parser");
 const path = require("path");
 
 const authRoute = require("./routes/auth");
@@ -12,6 +13,11 @@ const destinationRoute = require("./routes/destination");
 require("dotenv").config();
 
 const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
   cors({
@@ -25,10 +31,6 @@ app.use(cookieParser());
 app.use(compression());
 
 app.use(helmet());
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
-app.use(express.json());
 
 app.use(logger("dev"));
 

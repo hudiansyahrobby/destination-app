@@ -21,7 +21,7 @@ router.post(
   verifyAdmin,
   uploadImages,
   resizeImages,
-  isValid(destinationValidation.create, "body"),
+  isValid(destinationValidation.destination, "body"),
   create
 );
 
@@ -33,7 +33,9 @@ router.put(
   "/destinations/:id",
   verifyUser,
   verifyAdmin,
-  isValid(destinationValidation, "body"),
+  uploadImages,
+  resizeImages,
+  isValid(destinationValidation.destination, "body"),
   update
 );
 

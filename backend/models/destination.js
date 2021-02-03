@@ -20,11 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       images: {
         type: DataTypes.STRING,
         get() {
-          console.log("HA", this.getDataValue("images"));
           return this.getDataValue("images").split(";");
         },
         set(val) {
-          console.log(val);
           this.setDataValue("images", val.join(";"));
         },
       },
