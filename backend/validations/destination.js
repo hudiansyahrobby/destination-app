@@ -34,10 +34,10 @@ const destination = {
       "string.min": "description shoult be at least 50 characters",
       "any.required": `description is a required field`,
     }),
-    image: Joi.string().required().messages({
-      "string.base": `image should be a type of string`,
-      "string.empty": `image cannot be an empty field`,
-      "any.required": `image is a required field`,
+    images: Joi.array().items(Joi.string().required()).messages({
+      "string.base": `images should be a type of string`,
+      "string.empty": `images cannot be an empty field`,
+      "any.required": `images is a required field`,
     }),
   }),
 };

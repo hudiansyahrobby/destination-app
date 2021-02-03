@@ -4,6 +4,7 @@ const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const compression = require("compression");
 const helmet = require("helmet");
+const path = require("path");
 
 const authRoute = require("./routes/auth");
 const destinationRoute = require("./routes/destination");
@@ -25,9 +26,9 @@ app.use(compression());
 
 app.use(helmet());
 
-app.use(express.json());
-
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.json());
 
 app.use(logger("dev"));
 

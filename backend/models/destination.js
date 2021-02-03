@@ -17,7 +17,17 @@ module.exports = (sequelize, DataTypes) => {
       city: DataTypes.STRING,
       province: DataTypes.STRING,
       description: DataTypes.TEXT,
-      image: DataTypes.STRING,
+      images: {
+        type: DataTypes.STRING,
+        get() {
+          console.log("HA", this.getDataValue("images"));
+          return this.getDataValue("images").split(";");
+        },
+        set(val) {
+          console.log(val);
+          this.setDataValue("images", val.join(";"));
+        },
+      },
     },
     {
       sequelize,

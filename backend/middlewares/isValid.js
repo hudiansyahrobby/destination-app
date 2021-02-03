@@ -3,6 +3,7 @@ const Joi = require("joi");
 const isValid = (schema, property) => {
   return (req, res, next) => {
     const { error } = schema.validate(req[property]);
+
     // console.log("FIRST ERR", error);
     const valid = error == null;
     if (valid) {

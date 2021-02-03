@@ -9,18 +9,18 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
       },
       city: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(70),
       },
       province: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
       },
       description: {
         type: Sequelize.TEXT,
       },
-      image: {
+      images: {
         type: Sequelize.STRING,
       },
       createdAt: {

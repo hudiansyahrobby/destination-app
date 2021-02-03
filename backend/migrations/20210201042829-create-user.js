@@ -10,11 +10,11 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
         allowNull: false,
       },
       email: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         allowNull: false,
         unique: true,
       },
@@ -23,14 +23,14 @@ module.exports = {
         defaultValue: 0,
       },
       password: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(150),
         allowNull: true,
       },
       refreshToken: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(150),
       },
       resetPasswordToken: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(150),
       },
       resetTokenExpired: {
         type: Sequelize.DATE,

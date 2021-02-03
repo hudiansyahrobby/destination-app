@@ -11,12 +11,16 @@ const {
   remove,
 } = require("../controllers/destination");
 
+const { uploadImages, resizeImages } = require("../controllers/image");
+
 const router = Router();
 
 router.post(
   "/destinations",
   verifyUser,
   verifyAdmin,
+  uploadImages,
+  resizeImages,
   isValid(destinationValidation.create, "body"),
   create
 );

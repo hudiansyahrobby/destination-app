@@ -52,9 +52,8 @@ exports.verifyUser = async function (req, res, next) {
 };
 
 exports.verifyAdmin = (req, res, next) => {
-  const { isAdmin } = req.user.dataValues;
+  const isAdmin = req?.user?.dataValues?.isAdmin;
 
-  console.log("admin", isAdmin);
   try {
     if (isAdmin) {
       return next();

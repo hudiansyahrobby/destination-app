@@ -5,8 +5,7 @@ const { Destination } = require("../models");
 const { Op } = require("sequelize");
 
 exports.create = async (req, res) => {
-  const { name, city, province, description, image } = req.body;
-
+  const { name, city, province, description, images } = req.body;
   try {
     const destination = await Destination.findOne({
       where: { name, city, province },
@@ -21,7 +20,7 @@ exports.create = async (req, res) => {
       city,
       province,
       description,
-      image,
+      images,
     };
 
     await Destination.create(newDestination);
