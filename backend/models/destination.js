@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Destination.belongsToMany(models.User, {
+        through: "UserFavorites",
+        timestamps: false,
+      });
     }
   }
   Destination.init(
