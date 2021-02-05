@@ -16,6 +16,8 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false,
         as: "favorite",
       });
+
+      User.hasMany(models.Comment);
     }
   }
   User.init(

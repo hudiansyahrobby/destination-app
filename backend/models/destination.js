@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
         through: "UserFavorites",
         timestamps: false,
       });
+
+      Destination.hasMany(models.Comment, {
+        as: "comments",
+      });
     }
   }
   Destination.init(

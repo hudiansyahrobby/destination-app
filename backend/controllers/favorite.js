@@ -3,13 +3,11 @@ const { UserFavorite, User, Destination } = require("../models");
 exports.create = async (req, res) => {
   const { destinationId } = req.body;
   const { id: userId } = req.user.dataValues;
-  console.log("USER ID", userId);
   try {
     const favoritedItem = await UserFavorite.findOne({
       where: { destinationId, userId },
     });
 
-    console.log("FAVORITED ITEMS", favoritedItem);
     // Delete if the item exist, if not create
 
     if (favoritedItem) {
@@ -23,7 +21,7 @@ exports.create = async (req, res) => {
         userId,
         destinationId,
       };
-      console.log("ID", newFavoriteItem);
+
       await UserFavorite.create(newFavoriteItem);
       return res
         .status(201)

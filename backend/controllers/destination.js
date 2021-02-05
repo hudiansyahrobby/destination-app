@@ -4,7 +4,7 @@ const fs = require("fs");
 const { getPagination } = require("../helpers/getPagination");
 const { getPaginationData } = require("../helpers/getPaginationData");
 const { getSort } = require("../helpers/getSort");
-const { Destination } = require("../models");
+const { Destination, Comment, User } = require("../models");
 const {
   uploadToCloudinary,
   deleteImageOnCloudinary,
@@ -81,7 +81,28 @@ exports.getDetail = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const destination = await Destination.findByPk(id);
+    const destination = await Destination.findByPk(id, {
+      include: [
+        {
+          model: Comment,
+          attributes: {
+            exclude: ["DestinationId", "destinationId", "UserId", "userId"],
+          },
+          as: "comments",
+          include: [
+            {
+              model: User,
+              attributes: ["name"],
+              as: "user",
+            },
+          ],
+        },
+        // {
+        //   model: User,
+        //   attributes: { include: ["name"] },
+        // },
+      ],
+    });
 
     if (!destination) {
       return res.status(400).json({ message: "Destination not found" });
@@ -146,7 +167,7 @@ exports.remove = async (req, res) => {
 
   try {
     const destination = await Destination.findByPk(id);
-
+    console.log("DES", destination);
     if (!destination) {
       return res
         .status(400)
@@ -154,11 +175,14 @@ exports.remove = async (req, res) => {
     }
 
     const public_ids = getPublicId(destination.images);
+    console.log(public_ids);
 
+    console.log("oks");
     await Destination.destroy({
       where: { id },
     });
 
+    console.log("ok");
     for (const public_id of public_ids) {
       await deleteImageOnCloudinary(public_id);
     }

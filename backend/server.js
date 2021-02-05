@@ -10,6 +10,7 @@ const path = require("path");
 const authRoute = require("./routes/auth");
 const destinationRoute = require("./routes/destination");
 const favoriteRoute = require("./routes/favorite");
+const commentRoute = require("./routes/comment");
 
 require("dotenv").config();
 
@@ -38,5 +39,6 @@ app.use(logger("dev"));
 app.use("/api/v1", authRoute);
 app.use("/api/v1", destinationRoute);
 app.use("/api/v1", favoriteRoute);
+app.use("/api/v1", commentRoute);
 
 module.exports = app;
