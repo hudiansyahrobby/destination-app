@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem, Heading, Image } from "@chakra-ui/react";
+import { Box, Grid, Heading, Image, Text } from "@chakra-ui/react";
 import React from "react";
 
 const Hero: React.FC = () => {

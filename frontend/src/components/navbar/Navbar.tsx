@@ -1,5 +1,6 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import React from "react";
+import { Link } from "react-router-dom";
 import NavMenu from "./NavMenu";
 
 const Navbar: React.FC = () => {
@@ -26,10 +27,12 @@ const Navbar: React.FC = () => {
           <NavMenu link="/" title="Home" />
           <NavMenu link="/daftar-tempat-wisata" title="Daftar Tempat Wisata" />
         </Box>
-        <Button colorScheme="whatsapp" mr="4">
+        <Button colorScheme="whatsapp" mr="4" as={Link} to="/signup">
           Sign Up
         </Button>
-        <Button colorScheme="gray">Log in</Button>
+        <Button colorScheme="gray" as={Link} to="/login">
+          Log in
+        </Button>
       </Flex>
     </Flex>
   );

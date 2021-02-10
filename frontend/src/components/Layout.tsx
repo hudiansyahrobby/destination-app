@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import React from "react";
-import Navbar from "./Navbar/Navbar";
+import Navbar from "./navbar/Navbar";
 
 interface LayoutProps {
   children: React.ReactNode;
