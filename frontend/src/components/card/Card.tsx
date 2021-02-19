@@ -11,7 +11,7 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ title, content, image, link }) => {
   return (
-    <Box boxShadow="md">
+    <Box boxShadow="md" rounded="lg" overflow="hidden">
       <Box>
         <Image
           w="full"
@@ -26,11 +26,12 @@ const Card: React.FC<CardProps> = ({ title, content, image, link }) => {
             Jakarta
           </Tag>
           <Heading fontSize={23} mt={3} as="h2">
-            {title}
+            <Link to="/destination/1">{title}</Link>
           </Heading>
           <Text as="p" mt={4} fontSize={15} color="gray.500">
             {content}
           </Text>
+
           <Button
             mt={5}
             display="block"

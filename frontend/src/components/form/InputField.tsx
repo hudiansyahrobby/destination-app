@@ -21,7 +21,7 @@ type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
 const InputField: React.FC<InputFieldProps> = React.memo((props) => {
   const [field, { error, touched }] = useField(props);
   const { name, label, placeholder, leftIcon, rightIcon } = props;
-  console.log("FIELD");
+
   return (
     <FormControl isInvalid={!!error && !!touched}>
       <FormLabel htmlFor={name}>{label}</FormLabel>

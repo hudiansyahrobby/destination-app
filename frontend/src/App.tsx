@@ -7,6 +7,8 @@ const Login = React.lazy(() => import("./pages/Login"));
 const Signup = React.lazy(() => import("./pages/Signup"));
 const ForgetPassword = React.lazy(() => import("./pages/ForgetPassword"));
 const ChangePassword = React.lazy(() => import("./pages/ChangePassword"));
+const Destination = React.lazy(() => import("./pages/Destination"));
+const DestinationDetail = React.lazy(() => import("./pages/DestinationDetail"));
 
 const App: React.FC = () => {
   return (
@@ -15,6 +17,8 @@ const App: React.FC = () => {
         <Suspense fallback={<Loading />}>
           <Route exact path="/forget-password" component={ForgetPassword} />
           <Route path="/forget-password/:token" component={ChangePassword} />
+          <Route path="/destination/:id" component={DestinationDetail} />
+          <Route exact path="/destination" component={Destination} />
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
           <Route path="/" exact component={Home} />
