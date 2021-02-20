@@ -7,6 +7,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React from "react";
+import Comment from "../comment/Comment";
 import Paragraph from "../typography/Paragraph";
 
 interface Item {
@@ -19,6 +20,15 @@ interface TabItemsProps {
 }
 
 const TabItems: React.FC<TabItemsProps> = ({ items }) => {
+  const comments = [
+    {
+      name: "Dan Abramov",
+      avatar: "https://bit.ly/dan-abramov",
+      content:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex sit ullam a accusamus tempora tenetur harum optio vitae quasi praesentium.",
+      date: "18 Januari 2020",
+    },
+  ];
   return (
     <Tabs isFitted variant="enclosed" isLazy>
       <TabList mb="1em">
@@ -32,13 +42,22 @@ const TabItems: React.FC<TabItemsProps> = ({ items }) => {
         })}
       </TabList>
       <TabPanels>
-        {items.map(({ content }) => {
+        <TabPanel>
+          <Paragraph>{items[0].content}</Paragraph>
+        </TabPanel>
+        <TabPanel>
+          <Comment comments={comments} />
+        </TabPanel>
+        <TabPanel>
+          <Paragraph>{items[2].content}</Paragraph>
+        </TabPanel>
+        {/* {items.map(({ content }) => {
           return (
             <TabPanel>
               <Paragraph>{content}</Paragraph>
             </TabPanel>
           );
-        })}
+        })} */}
       </TabPanels>
     </Tabs>
   );

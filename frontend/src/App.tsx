@@ -9,12 +9,14 @@ const ForgetPassword = React.lazy(() => import("./pages/ForgetPassword"));
 const ChangePassword = React.lazy(() => import("./pages/ChangePassword"));
 const Destination = React.lazy(() => import("./pages/Destination"));
 const DestinationDetail = React.lazy(() => import("./pages/DestinationDetail"));
+const AddDestination = React.lazy(() => import("./pages/AddDestination"));
 
 const App: React.FC = () => {
   return (
     <Router>
       <Switch>
         <Suspense fallback={<Loading />}>
+          <Route path="/admin/add-destination" component={AddDestination} />
           <Route exact path="/forget-password" component={ForgetPassword} />
           <Route path="/forget-password/:token" component={ChangePassword} />
           <Route path="/destination/:id" component={DestinationDetail} />

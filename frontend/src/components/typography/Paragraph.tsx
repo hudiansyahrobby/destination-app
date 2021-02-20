@@ -7,7 +7,7 @@ interface ParagraphProps {
 
 const Paragraph: React.FC<ParagraphProps> = ({ children }) => {
   return (
-    <Text color="gray.500" fontSize="15px" lineHeight="24px">
+    <Text color="gray.500" fontSize="14px" lineHeight="24px">
       {children}
     </Text>
   );

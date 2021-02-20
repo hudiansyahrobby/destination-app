@@ -1,13 +1,4 @@
-import {
-  Box,
-  Button,
-  Heading,
-  Image,
-  Stack,
-  Tag,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Button, Image, Tag, VStack } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
 import Paragraph from "../typography/Paragraph";

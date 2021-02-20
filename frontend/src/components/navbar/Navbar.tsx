@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "../form/SearchBar";

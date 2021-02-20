@@ -1,5 +1,6 @@
 import { Box, Tag } from "@chakra-ui/react";
 import React from "react";
+import { capitalizeFirstLetter } from "../helpers/capitalizeFirstLetter";
 
 interface TagListProps {
   tags: Array<string>;
@@ -11,7 +12,7 @@ const TagList: React.FC<TagListProps> = ({ tags }) => {
       {tags.map((tag) => {
         return (
           <Tag mr="3px" color="teal" fontWeight="bold">
-            {tag}
+            {capitalizeFirstLetter(tag)}
           </Tag>
         );
       })}
