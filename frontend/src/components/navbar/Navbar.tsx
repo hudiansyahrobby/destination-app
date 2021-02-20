@@ -2,6 +2,7 @@ import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "../form/SearchBar";
+import Title from "../typography/Title";
 import NavMenu from "./NavMenu";
 
 const Navbar: React.FC = () => {
@@ -19,9 +20,9 @@ const Navbar: React.FC = () => {
       justifyContent="space-between"
     >
       <Box>
-        <Heading as="h1" fontSize={25}>
+        <Title>
           <Link to="/">Destination App</Link>
-        </Heading>
+        </Title>
       </Box>
       <Flex flex="1" mx={10}>
         <SearchBar />

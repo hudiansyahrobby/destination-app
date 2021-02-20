@@ -1,4 +1,4 @@
-import { Box, chakra } from "@chakra-ui/react";
+import { Box, chakra, Flex } from "@chakra-ui/react";
 import React from "react";
 import { AiFillStar } from "react-icons/ai";
 
@@ -9,7 +9,7 @@ interface RatingProps {
 const Rating: React.FC<RatingProps> = ({ rating }) => {
   const StarIcon = chakra(AiFillStar);
   return (
-    <>
+    <Flex>
       {Array(5)
         .fill(0)
         .map((_, index) => {
@@ -23,7 +23,7 @@ const Rating: React.FC<RatingProps> = ({ rating }) => {
             </Box>
           );
         })}
-    </>
+    </Flex>
   );
 };
 

@@ -4,7 +4,7 @@ import Card from "./Card";
 
 const Cards = (): JSX.Element => {
   return (
-    <SimpleGrid columns={[1, 2, 3, 4]} gap={6} mt={15}>
+    <SimpleGrid columns={[1, 2, 3]} gap={6} mt={15}>
       {[1, 2, 3, 4, 5, 6, 7, 8].map((_, index) => {
         return (
           <>
