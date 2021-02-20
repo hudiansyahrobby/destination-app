@@ -14,7 +14,7 @@ const TextWithIcon: React.FC<TextWithIconProps> = ({
 }) => {
   return (
     <Flex alignItems="center">
-      <Icon display="inline-block" fontSize={30} />{" "}
+      <Icon display="inline-block" fontSize={30} mr="8px" />{" "}
       <Text as="span" mr={2}>
         {text} :
       </Text>{" "}
