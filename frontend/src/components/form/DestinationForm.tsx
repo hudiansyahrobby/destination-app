@@ -7,6 +7,7 @@ import BeatLoader from "react-spinners/BeatLoader";
 import { FaMapMarkedAlt, FaUmbrellaBeach } from "react-icons/fa";
 import TextEditor from "./TextEditor";
 import InputSelect from "./InputSelect";
+import InputImages from "./InputImages";
 
 interface DestinationFormProps {
   editMode: boolean;
@@ -56,6 +57,7 @@ const DestinationForm: React.FC<DestinationFormProps> = ({
                       placeholder="Categories..."
                     />
 
+                    <InputImages name="images" label="Upload Images" />
                     <TextEditor
                       name="description"
                       placeholder="Description..."
