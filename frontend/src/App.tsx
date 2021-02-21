@@ -16,7 +16,7 @@ const App: React.FC = () => {
     <Router>
       <Switch>
         <Suspense fallback={<Loading />}>
-          <Route path="/admin/add-destination" component={AddDestination} />
+          <Route path="/admin/destination" component={AddDestination} />
           <Route exact path="/forget-password" component={ForgetPassword} />
           <Route path="/forget-password/:token" component={ChangePassword} />
           <Route path="/destination/:id" component={DestinationDetail} />

@@ -1,12 +1,15 @@
 import React from "react";
-import Layout from "../components/Layout";
-import Carousel from "../components/Carousel/Carousel";
 import { Box, VStack } from "@chakra-ui/react";
-import Title from "../components/typography/Title";
-import DestinationInfo from "../components/DestinationInfo";
-import TabItems from "../components/Tabs/TabItems";
 import { IoMdInformationCircle } from "react-icons/io";
 import { FaComments, FaMapMarkedAlt } from "react-icons/fa";
+
+import Layout from "../components/Layout";
+import Carousel from "../components/carousel/Carousel";
+import Title from "../components/typography/Title";
+import DestinationInfo from "../components/DestinationInfo";
+import TabItems from "../components/tabs/TabItems";
+import FloatingButton from "../components/button/FloatingButton";
+import { MdFavorite } from "react-icons/md";
 
 const DestinationDetail = () => {
   const items = [
@@ -31,7 +34,7 @@ const DestinationDetail = () => {
   ];
   return (
     <Layout>
-      <Box mt="100px">
+      <Box mt="75px">
         <Carousel />
         <VStack mx={10} align="flex-start" spacing="15px" mt="50px">
           <Box ml="5px">
@@ -43,6 +46,7 @@ const DestinationDetail = () => {
       <Box mt="50px" mx={10}>
         <TabItems items={items} />
       </Box>
+      <FloatingButton icon={MdFavorite} onClick={() => console.log("HAHA")} />
     </Layout>
   );
 };

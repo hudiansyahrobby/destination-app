@@ -1,6 +1,6 @@
 import { VStack } from "@chakra-ui/react";
 import React from "react";
-import Rating from "../Rating/Rating";
+import Rating from "../rating/Rating";
 import Paragraph from "../typography/Paragraph";
 
 interface CommentBodyProps {

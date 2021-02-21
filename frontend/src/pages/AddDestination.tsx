@@ -1,11 +1,14 @@
 import React from "react";
-import AddDestinationForm from "../components/form/AddDestinationForm";
+import DestinationForm from "../components/form/DestinationForm";
 import Layout from "../components/Layout";
+import { getQuery } from "../helpers/getQuery";
 
 const AddDestination = () => {
+  const editMode = !!getQuery("editMode");
+  console.log("EDITMODE", editMode);
   return (
     <Layout>
-      <AddDestinationForm />
+      <DestinationForm editMode={editMode} />
     </Layout>
   );
 };

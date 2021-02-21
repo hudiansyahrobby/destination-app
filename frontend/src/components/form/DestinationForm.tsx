@@ -5,12 +5,24 @@ import InputField from "./InputField";
 import Wrapper from "../shared/Wrapper";
 import BeatLoader from "react-spinners/BeatLoader";
 import { FaMapMarkedAlt, FaUmbrellaBeach } from "react-icons/fa";
+import TextEditor from "./TextEditor";
+import InputSelect from "./InputSelect";
 
-const AddDestinationForm: React.FC = () => {
+interface DestinationFormProps {
+  editMode: boolean;
+  destinations?: any;
+}
+
+const DestinationForm: React.FC<DestinationFormProps> = ({
+  editMode,
+  destinations,
+}) => {
+  const pageTitle = editMode ? "Edit Destination" : "Add Destination";
+  const buttonTitle = editMode ? "Update" : "Add";
   return (
     <Box as="section">
       <Heading as="h1" textAlign="center" mt="120px">
-        Add Destination
+        {pageTitle}
       </Heading>
       <Formik
         initialValues={{ name: "", location: "", category: "", image: "" }}
@@ -37,10 +49,22 @@ const AddDestinationForm: React.FC = () => {
                       leftIcon={<FaMapMarkedAlt size={18} />}
                       placeholder="Location..."
                     />
+
+                    <InputSelect
+                      name="Categories"
+                      label="Categories"
+                      placeholder="Categories..."
+                    />
+
+                    <TextEditor
+                      name="description"
+                      placeholder="Description..."
+                      label="Description"
+                    />
                   </Stack>
                 )}
               </Field>
-              <Flex justifyContent="flex-end">
+              <Flex justifyContent="flex-end" mt="70px">
                 <Button
                   mt={4}
                   colorScheme="teal"
@@ -48,7 +72,7 @@ const AddDestinationForm: React.FC = () => {
                   type="submit"
                   spinner={<BeatLoader size={8} color="white" />}
                 >
-                  Add
+                  {buttonTitle}
                 </Button>
               </Flex>
             </Wrapper>
@@ -58,4 +82,4 @@ const AddDestinationForm: React.FC = () => {
     </Box>
   );
 };
-export default AddDestinationForm;
+export default DestinationForm;
