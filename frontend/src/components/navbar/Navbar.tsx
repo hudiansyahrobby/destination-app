@@ -1,11 +1,25 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import React from "react";
+import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
 import SearchBar from "../form/SearchBar";
 import Title from "../typography/Title";
 import NavMenu from "./NavMenu";
+import BeatLoader from "react-spinners/BeatLoader";
+
+import { logout } from "../../API/authAPI";
 
 const Navbar: React.FC = () => {
+  const isAuthenticated = localStorage.getItem("token");
+  const { isLoading, mutateAsync } = useMutation(logout, {
+    onSuccess: () => {
+      localStorage.removeItem("token");
+    },
+  });
+
+  const onLogout = async () => {
+    await mutateAsync();
+  };
   return (
     <Flex
       py="4"
@@ -32,12 +46,27 @@ const Navbar: React.FC = () => {
           <NavMenu link="/" title="Home" />
           <NavMenu link="/destination" title="Destinasi" />
         </Box>
-        <Button colorScheme="whatsapp" mr="4" as={Link} to="/signup">
-          Sign Up
-        </Button>
-        <Button colorScheme="gray" as={Link} to="/login">
-          Log in
-        </Button>
+        {!isAuthenticated ? (
+          <>
+            <Button colorScheme="whatsapp" mr="4" as={Link} to="/signup">
+              Sign Up
+            </Button>
+            <Button colorScheme="gray" as={Link} to="/login">
+              Log in
+            </Button>
+          </>
+        ) : (
+          <Button
+            colorScheme="whatsapp"
+            mr="4"
+            onClick={onLogout}
+            isLoading={isLoading}
+            type="submit"
+            spinner={<BeatLoader size={8} color="white" />}
+          >
+            Log out
+          </Button>
+        )}
       </Flex>
     </Flex>
   );

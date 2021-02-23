@@ -14,7 +14,7 @@ interface PasswordFieldProps {
 const PasswordField: React.FC<PasswordFieldProps> = (props) => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
-
+  console.log(show);
   return (
     <InputField
       {...props}

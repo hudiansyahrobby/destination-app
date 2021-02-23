@@ -7,13 +7,12 @@ const compression = require("compression");
 const helmet = require("helmet");
 const bodyParser = require("body-parser");
 const path = require("path");
+require("dotenv").config();
 
 const authRoute = require("./routes/auth");
 const destinationRoute = require("./routes/destination");
 const favoriteRoute = require("./routes/favorite");
 const commentRoute = require("./routes/comment");
-
-require("dotenv").config();
 
 const app = express();
 
@@ -24,7 +23,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
   cors({
-    origin: [process.env.CLIENT_URL],
+    origin: process.env.CLIENT_URL,
     credentials: true,
   })
 );

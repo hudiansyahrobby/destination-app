@@ -1,25 +1,67 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
-import { Box, Button, Flex, Heading, Link, Stack } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertIcon,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Link,
+  Stack,
+} from "@chakra-ui/react";
 import InputField from "./InputField";
 import { GrMail } from "react-icons/gr";
 import Wrapper from "../shared/Wrapper";
 import BeatLoader from "react-spinners/BeatLoader";
 import PasswordField from "./PasswordField";
 import { BsFillPersonFill } from "react-icons/bs";
-import { Link as LinkRoute } from "react-router-dom";
+import { Link as LinkRoute, useHistory } from "react-router-dom";
+import { useMutation } from "react-query";
+import { signup } from "../../API/authAPI";
+import { RegisterData } from "../../interface/AuthInterface";
+import { registedValidation } from "../../validations/authValidation";
 
 const SignupForm: React.FC = () => {
+  const history = useHistory();
+  const { mutateAsync, isLoading, isError, error } = useMutation(signup, {
+    onSuccess: () => {
+      history.push("/login");
+    },
+  });
+
+  let customError: any = {};
+  customError = error;
+
+  const onSignupUser = async (signupData: RegisterData) => {
+    await mutateAsync(signupData);
+  };
   return (
     <Box as="section">
       <Heading as="h1" textAlign="center" mt="120px">
         Create Account
       </Heading>
+      {isError && (
+        <Box mx="18px">
+          <Alert status="error" mt="20px">
+            <AlertIcon />
+            {customError?.response?.data?.message}
+          </Alert>
+        </Box>
+      )}
       <Formik
-        initialValues={{ email: "", password: "" }}
-        onSubmit={(values, actions) => {}}
+        initialValues={{
+          name: "",
+          email: "",
+          password: "",
+          passwordConfirmation: "",
+        }}
+        validationSchema={registedValidation}
+        onSubmit={(values, actions) => {
+          onSignupUser(values);
+        }}
       >
-        {({ isSubmitting }) => (
+        {() => (
           <Form>
             <Wrapper size="sm">
               <Field>
@@ -50,7 +92,7 @@ const SignupForm: React.FC = () => {
                     <PasswordField
                       label="Password Confirmation"
                       placeholder="Password confirmation..."
-                      name="password2"
+                      name="passwordConfirmation"
                     />
                   </Stack>
                 )}
@@ -71,7 +113,7 @@ const SignupForm: React.FC = () => {
                 <Button
                   mt={4}
                   colorScheme="teal"
-                  isLoading={isSubmitting}
+                  isLoading={isLoading}
                   type="submit"
                   spinner={<BeatLoader size={8} color="white" />}
                 >

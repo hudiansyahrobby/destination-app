@@ -32,10 +32,13 @@ const auth = {
         "string.pattern.base":
           "password must be at least one uppercase letter, one lowercase letter, one number and one special character",
       }),
-    password2: Joi.any().equal(Joi.ref("password")).required().messages({
-      "any.only": "password does not match",
-      "any.required": `password confirmation is a required field`,
-    }),
+    passwordConfirmation: Joi.any()
+      .equal(Joi.ref("password"))
+      .required()
+      .messages({
+        "any.only": "password does not match",
+        "any.required": `password confirmation is a required field`,
+      }),
   }),
 
   login: Joi.object().keys({

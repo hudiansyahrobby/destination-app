@@ -1,15 +1,11 @@
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  Box,
-} from "@chakra-ui/react";
+import { Table, Box, Input, Button, IconButton } from "@chakra-ui/react";
 import React from "react";
+import {
+  BsChevronDoubleLeft,
+  BsChevronDoubleRight,
+  BsChevronLeft,
+  BsChevronRight,
+} from "react-icons/bs";
 import {
   useTable,
   useSortBy,
@@ -17,34 +13,28 @@ import {
   useGlobalFilter,
   useAsyncDebounce,
 } from "react-table";
+import TableBody from "./TableBody";
+import TableHead from "./TableHead";
 
-function GlobalFilter({
-  preGlobalFilteredRows,
-  globalFilter,
-  setGlobalFilter,
-}: any) {
-  const count = preGlobalFilteredRows.length;
+function GlobalFilter({ globalFilter, setGlobalFilter }: any) {
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
     setGlobalFilter(value || undefined);
   }, 200);
 
   return (
-    <span>
+    <Box as="div" mt="120px">
       Search:{" "}
-      <input
+      <Input
+        mt="10px"
         value={value || ""}
         onChange={(e) => {
           setValue(e.target.value);
           onChange(e.target.value);
         }}
-        placeholder={`${count} records...`}
-        style={{
-          fontSize: "1.1rem",
-          border: "0",
-        }}
+        placeholder={`Search...`}
       />
-    </span>
+    </Box>
   );
 }
 
@@ -143,8 +133,7 @@ const TableItem = () => {
     gotoPage,
     nextPage,
     previousPage,
-    setPageSize,
-    state: { pageIndex, pageSize },
+    state: { pageIndex },
     preGlobalFilteredRows,
     setGlobalFilter,
   } = useTable(
@@ -165,63 +154,52 @@ const TableItem = () => {
         globalFilter={state.globalFilter}
         setGlobalFilter={setGlobalFilter}
       />
-      <Table {...getTableProps()} mt="100px" variant="striped">
-        <Thead>
-          {headerGroups.map((headerGroup) => (
-            <Tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <Th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render("Header")}
-                  {/* Add a sort direction indicator */}
-                  <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? " 🔽"
-                        : " 🔼"
-                      : ""}
-                  </span>
-                </Th>
-              ))}
-            </Tr>
-          ))}
-        </Thead>
-        <Tbody {...getTableBodyProps()}>
-          {page.map((row, i) => {
-            prepareRow(row);
-            return (
-              <Tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <Td {...cell.getCellProps()}>{cell.render("Cell")}</Td>
-                  );
-                })}
-              </Tr>
-            );
-          })}
-        </Tbody>
+      <Table {...getTableProps()} mt="20px" variant="simple">
+        <TableHead headerGroups={headerGroups} />
+        <TableBody
+          page={page}
+          getTableBodyProps={getTableBodyProps}
+          prepareRow={prepareRow}
+        />
       </Table>
-      <div className="pagination">
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          {"<<"}
-        </button>{" "}
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {"<"}
-        </button>{" "}
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          {">"}
-        </button>{" "}
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          {">>"}
-        </button>{" "}
-        <span>
+      <Box>
+        <IconButton
+          aria-label="Go To Page 1"
+          onClick={() => gotoPage(0)}
+          disabled={!canPreviousPage}
+        >
+          <BsChevronDoubleLeft />
+        </IconButton>{" "}
+        <IconButton
+          aria-label="Go to previous page"
+          onClick={() => previousPage()}
+          disabled={!canPreviousPage}
+        >
+          <BsChevronLeft />
+        </IconButton>{" "}
+        <IconButton
+          aria-label="Go to next page"
+          onClick={() => nextPage()}
+          disabled={!canNextPage}
+        >
+          <BsChevronRight />
+        </IconButton>{" "}
+        <IconButton
+          aria-label="Go to last page"
+          onClick={() => gotoPage(pageCount - 1)}
+          disabled={!canNextPage}
+        >
+          <BsChevronDoubleRight />
+        </IconButton>{" "}
+        <Box as="span">
           Page{" "}
-          <strong>
+          <Box as="strong">
             {pageIndex + 1} of {pageOptions.length}
-          </strong>{" "}
-        </span>
-        <span>
+          </Box>{" "}
+        </Box>
+        <Box as="span">
           | Go to page:{" "}
-          <input
+          <Input
             type="number"
             defaultValue={pageIndex + 1}
             onChange={(e) => {
@@ -230,20 +208,8 @@ const TableItem = () => {
             }}
             style={{ width: "100px" }}
           />
-        </span>{" "}
-        <select
-          value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-          }}
-        >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
-      </div>
+        </Box>{" "}
+      </Box>
     </Box>
   );
 };

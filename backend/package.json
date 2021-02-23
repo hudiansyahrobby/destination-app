@@ -41,6 +41,8 @@
     "mysql2": "^2.2.5",
     "nodemailer": "^6.4.17",
     "nodemailer-sendgrid-transport": "^0.2.0",
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
     "pm2": "^4.5.4",
     "sequelize": "^6.5.0",
     "sharp": "^0.27.1"

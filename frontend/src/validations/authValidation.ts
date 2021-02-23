@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-export const loginValidation = Yup.object({
+export const registedValidation = Yup.object({
   name: Yup.string()
     .matches(/^[a-zA-Z ]*$/, {
       message: "name should only contain alphapet or space",
@@ -17,7 +17,7 @@ export const loginValidation = Yup.object({
       }
     )
     .required("password is required"),
-  password2: Yup.string()
+  passwordConfirmation: Yup.string()
     .oneOf([Yup.ref("password"), null], "password does not match")
     .required("password confirmation is required"),
 });
