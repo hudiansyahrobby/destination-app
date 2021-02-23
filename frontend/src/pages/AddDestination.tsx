@@ -5,7 +5,6 @@ import { getQuery } from "../helpers/getQuery";
 
 const AddDestination = () => {
   const editMode = !!getQuery("editMode");
-  console.log("EDITMODE", editMode);
   return (
     <Layout>
       <DestinationForm editMode={editMode} />

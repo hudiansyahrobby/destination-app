@@ -2,11 +2,15 @@ const Joi = require("joi");
 
 const destination = {
   destination: Joi.object().keys({
-    name: Joi.string().required().messages({
-      "string.base": `name should be a type of string`,
-      "string.empty": `name cannot be an empty field`,
-      "any.required": `name is a required field`,
-    }),
+    name: Joi.string()
+      .required()
+      .pattern(/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/)
+      .messages({
+        "string.base": `name should be a type of string`,
+        "string.empty": `name cannot be an empty field`,
+        "string.pattern.base": `name should only contain alphapet or space or number`,
+        "any.required": `name is a required field`,
+      }),
 
     city: Joi.string()
       .pattern(/^[a-zA-Z ]*$/)
