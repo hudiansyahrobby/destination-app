@@ -5,8 +5,12 @@ import { getAllDestinations } from "../API/destinationAPI";
 import Cards from "./card/Cards";
 import { useInView } from "react-intersection-observer";
 import { DotLoader } from "react-spinners";
+import CardSkeletons from "./skeleton/CardSkeletons";
+import { useLocation } from "react-router";
 
 const DestinationList: React.FC = () => {
+  const { pathname } = useLocation();
+
   const { ref, inView } = useInView({
     threshold: 0,
   });
@@ -19,7 +23,6 @@ const DestinationList: React.FC = () => {
     data,
     fetchNextPage,
     hasNextPage,
-    isFetching,
     isFetchingNextPage,
     isError,
     isLoading,
@@ -42,9 +45,8 @@ const DestinationList: React.FC = () => {
   }, [inView, hasNextPage, fetchNextPage]);
 
   if (isLoading) {
-    return <Box>Loading...</Box>;
+    return <CardSkeletons />;
   }
-
   if (isError) {
     return <Box>Error...</Box>;
   }
@@ -53,22 +55,22 @@ const DestinationList: React.FC = () => {
     <>
       <Box mx={{ base: 3, md: 8 }} mt={15}>
         {data?.pages?.map((page) => {
-          console.log(page);
           return <Cards key={page.currentPage} destinations={page.results} />;
         })}
       </Box>
-      <Flex justifyContent="center" my="20px">
-        <Button
-          ref={ref}
-          onClick={() => fetchNextPage()}
-          disabled={!hasNextPage || isFetchingNextPage}
-          isLoading={isFetchingNextPage}
-          spinner={<DotLoader size={50} color="teal" />}
-        >
-          {hasNextPage ? "Load More" : "Nothing more to load"}
-        </Button>
-      </Flex>
-      <div>{isFetching && !isFetchingNextPage ? "Fetching..." : null}</div>
+      {pathname !== "/" && (
+        <Flex justifyContent="center" my="20px">
+          <Button
+            ref={ref}
+            onClick={() => fetchNextPage()}
+            disabled={!hasNextPage || isFetchingNextPage}
+            isLoading={isFetchingNextPage}
+            spinner={<DotLoader size={50} color="teal" />}
+          >
+            {hasNextPage ? "Load More" : "Nothing more to load"}
+          </Button>
+        </Flex>
+      )}
     </>
   );
 };
