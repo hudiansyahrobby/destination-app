@@ -29,7 +29,7 @@ module.exports = {
         {
           name: "John Doe",
           email: "john3@gmail.com",
-          isAdmin: 1,
+          isAdmin: true,
           password: await hashPassword("1234567890"),
           createdAt: new Date(),
           updatedAt: new Date(),

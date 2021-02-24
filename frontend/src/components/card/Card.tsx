@@ -5,34 +5,42 @@ import Paragraph from "../typography/Paragraph";
 import Title from "../typography/Title";
 
 interface CardProps {
-  title: string;
-  content: string;
-  image: string;
-  link: string;
+  id: number;
+  name: string;
+  city: string;
+  province: string;
+  images: Array<string>;
+  description: string;
 }
-
-const Card: React.FC<CardProps> = ({ title, content, image, link }) => {
+const Card: React.FC<CardProps> = ({
+  id,
+  name,
+  city,
+  province,
+  images,
+  description,
+}) => {
   return (
-    <Box boxShadow="md" rounded="lg" overflow="hidden">
+    <Box boxShadow="lg" rounded="lg" overflow="hidden">
       <Box>
         <Image
           w="full"
-          h="full"
+          h="200px"
           objectFit="cover"
-          src={image}
-          alt={title}
+          src={images[0]}
+          alt={name}
           fallbackSrc="https://via.placeholder.com/150"
         />
         <VStack align="flex-start" spacing="10px" m={2} px={4} pb={4}>
           <Tag mt={2} color="teal" fontWeight="bold">
-            Jakarta
+            {province}
           </Tag>
           <Title>
-            <Link to="/destination/1">{title}</Link>
+            <Link to={`/destination/${id}`}>{name}</Link>
           </Title>
-          <Paragraph>{content}</Paragraph>
+          <Paragraph>{description}</Paragraph>
           <Button display="block" w="full" textAlign="center" color="teal">
-            <Link to={link}>See Detail</Link>
+            <Link to={`/destination/${id}`}>See Detail</Link>
           </Button>
         </VStack>
       </Box>

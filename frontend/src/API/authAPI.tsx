@@ -12,3 +12,7 @@ export const login = async (userData: LoginData) => {
 export const logout = async () => {
   await axios.post("/logout");
 };
+
+export const generateRefreshToken = async () => {
+  await axios.post("/refresh-token");
+};

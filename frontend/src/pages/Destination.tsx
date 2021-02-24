@@ -1,5 +1,6 @@
 import { Flex, Heading } from "@chakra-ui/react";
 import React from "react";
+
 import FilterButton from "../components/button/FilterButton";
 import DestinationList from "../components/DestinationList";
 import Layout from "../components/Layout";

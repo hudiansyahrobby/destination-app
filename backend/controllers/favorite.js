@@ -1,7 +1,7 @@
 const { UserFavorite, User, Destination } = require("../models");
 
-exports.create = async (req, res) => {
-  const { destinationId } = req.body;
+exports.toggle = async (req, res) => {
+  const { destinationId } = req.params;
   const { id: userId } = req.user.dataValues;
   try {
     const favoritedItem = await UserFavorite.findOne({

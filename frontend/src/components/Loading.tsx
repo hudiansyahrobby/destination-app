@@ -1,7 +1,8 @@
-import { Flex, Spinner } from "@chakra-ui/react";
+import { chakra, Flex, Spinner } from "@chakra-ui/react";
 import React from "react";
 
 const Loading: React.FC = () => {
+  const LoadingSpinner = chakra(Spinner);
   return (
     <Flex
       position="fixed"
@@ -9,11 +10,11 @@ const Loading: React.FC = () => {
       alignItems="center"
       inset="0"
     >
-      <Spinner
+      <LoadingSpinner
         thickness="10px"
         speed="0.65s"
         emptyColor="gray.200"
-        color="blue.500"
+        color="whatsapp.500"
         width={120}
         height={120}
       />
