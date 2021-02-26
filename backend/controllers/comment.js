@@ -1,10 +1,10 @@
 const { Comment } = require("../models");
 
 exports.create = async (req, res) => {
-  const { rating, content, destinationId } = req.body;
+  const { destinationId } = req.params;
+  const { rating, content } = req.body;
   const { id: userId } = req.user.dataValues;
 
-  console.log(typeof rating);
   try {
     const comment = await Comment.findOne({
       where: {

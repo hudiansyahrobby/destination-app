@@ -15,7 +15,6 @@ beforeAll((done) => {
       password2: "Hudiansyah12,",
     })
     .end((err, response) => {
-      console.log("SU", response);
       request
         .post("/api/v1/login")
         .send({
@@ -23,7 +22,6 @@ beforeAll((done) => {
           password: "Hudiansyah12,",
         })
         .end((err, response) => {
-          console.log(response.body.results.accessToken);
           token = response.body.results.accessToken; // save the token!
           done();
         });

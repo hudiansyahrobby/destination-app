@@ -20,6 +20,6 @@ const upload = multer({
 
 const maxFileTotal = 5;
 
-const uploadFiles = upload.array("image", maxFileTotal);
+const uploadFiles = upload.array("images", maxFileTotal);
 
 module.exports = uploadFiles;

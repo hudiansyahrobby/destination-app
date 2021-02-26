@@ -8,7 +8,7 @@ const isValid = require("../middlewares/isValid");
 const { verifyUser } = require("../middlewares/userAuth");
 
 router.post(
-  "/comments",
+  "/comments/:id",
   verifyUser,
   isValid(commentValidation.comment, "body"),
   create

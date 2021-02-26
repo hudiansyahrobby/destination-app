@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../models");
 
 exports.verifyUser = async function (req, res, next) {
-  console.log("REQ", req.headers);
   if (req.headers.authorization) {
     const bearerToken = req.headers.authorization.split(" ");
     let accessToken = bearerToken[1];

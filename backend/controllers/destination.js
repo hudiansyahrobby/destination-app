@@ -49,21 +49,23 @@ exports.create = async (req, res) => {
       .json({ message: "Destination has successsfully created" });
   } catch (error) {
     deleteImages(images);
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error });
   }
 };
 
 exports.get = async (req, res) => {
-  const { page, size, title, sort } = req.query;
+  const { page, size, search, sort } = req.query;
 
-  const titleCondition = title ? { name: { [Op.like]: `%${title}%` } } : null;
+  const searchCondition = search
+    ? { name: { [Op.like]: `%${search}%` } }
+    : null;
 
   const { limit, offset } = getPagination(page, size);
   const orderBy = !!sort ? getSort(sort) : ["createdAt", "DESC"];
 
   try {
     const response = await Destination.findAndCountAll({
-      where: titleCondition,
+      where: searchCondition,
       limit,
       offset,
       order: [orderBy],
@@ -97,18 +99,16 @@ exports.getDetail = async (req, res) => {
             },
           ],
         },
-        // {
-        //   model: User,
-        //   attributes: { include: ["name"] },
-        // },
       ],
     });
+
+    // const destination = await Destination.findByPk(id);
 
     if (!destination) {
       return res.status(400).json({ message: "Destination not found" });
     }
 
-    return res.status(400).json({ destination });
+    return res.status(200).json({ destination });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -167,7 +167,7 @@ exports.remove = async (req, res) => {
 
   try {
     const destination = await Destination.findByPk(id);
-    console.log("DES", destination);
+
     if (!destination) {
       return res
         .status(400)
@@ -175,14 +175,11 @@ exports.remove = async (req, res) => {
     }
 
     const public_ids = getPublicId(destination.images);
-    console.log(public_ids);
 
-    console.log("oks");
     await Destination.destroy({
       where: { id },
     });
 
-    console.log("ok");
     for (const public_id of public_ids) {
       await deleteImageOnCloudinary(public_id);
     }

@@ -65,7 +65,7 @@ exports.login = async (req, res, next) => {
 
     res.cookie("jwt", refreshToken, { httpOnly: true });
 
-    res.status(200).json({ results: { accessToken } });
+    res.status(200).json({ accessToken });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }

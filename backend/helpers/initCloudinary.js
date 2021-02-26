@@ -12,7 +12,6 @@ exports.uploadToCloudinary = (file) => {
   return new Promise((resolve) => {
     cloudinary.uploader.upload(file, (err, res) => {
       if (err) return res.status(400).json({ message: err });
-      console.log("REZ", res);
       resolve(res.secure_url);
     });
   });
@@ -22,8 +21,6 @@ exports.deleteImageOnCloudinary = (cloudinary_id) => {
   return new Promise((resolve) => {
     cloudinary.uploader.destroy(cloudinary_id, (err, res) => {
       if (err) return res.status(400).json({ message: err });
-      console.log("RESSS", res);
-      resolve("HAHAH");
     });
   });
 };

@@ -21,7 +21,7 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       images: {
-        type: Sequelize.STRING,
+        type: Sequelize.ARRAY(Sequelize.STRING),
       },
       createdAt: {
         type: Sequelize.DATE,
