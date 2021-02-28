@@ -22,5 +22,6 @@ exports.deleteImageOnCloudinary = (cloudinary_id) => {
     cloudinary.uploader.destroy(cloudinary_id, (err, res) => {
       if (err) return res.status(400).json({ message: err });
     });
+    resolve();
   });
 };

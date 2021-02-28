@@ -14,6 +14,10 @@ module.exports = {
       content: {
         type: Sequelize.TEXT,
       },
+      isEdited: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       destinationId: {
         type: Sequelize.INTEGER,
         onDelete: "CASCADE",

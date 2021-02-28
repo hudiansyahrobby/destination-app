@@ -13,9 +13,13 @@ exports.toggle = async (req, res) => {
     if (favoritedItem) {
       await favoritedItem.destroy();
 
-      return res
-        .status(200)
-        .json({ message: "Berhasil mengahapus item dari favorit" });
+      return res.status(200).json({
+        message: "Successfully deleted from favorite item",
+        item: {
+          destinationId,
+          userId,
+        },
+      });
     } else {
       const newFavoriteItem = {
         userId,
@@ -23,9 +27,13 @@ exports.toggle = async (req, res) => {
       };
 
       await UserFavorite.create(newFavoriteItem);
-      return res
-        .status(201)
-        .json({ message: "Berhasil menambah ke favorit item" });
+      return res.status(201).json({
+        message: "Successfully added to favorite item",
+        item: {
+          destinationId,
+          userId,
+        },
+      });
     }
   } catch (error) {
     return res.status(500).json({ message: error.message });

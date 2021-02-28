@@ -10,16 +10,11 @@ const comment = {
       "number.max": "rating must be between 0 to 5",
     }),
 
-    content: Joi.string().required().messages({
+    content: Joi.string().required().max(1500).messages({
       "string.base": `content should be a type of string`,
       "string.empty": `content cannot be an empty field`,
+      "string.max": "content must less than 1500 characters",
       "any.required": `content is a required field`,
-    }),
-
-    destinationId: Joi.number().required().messages({
-      "number.base": `destination id should be a type of number`,
-      "number.empty": `destination id cannot be an empty field`,
-      "any.required": `destination id is a required field`,
     }),
   }),
 };

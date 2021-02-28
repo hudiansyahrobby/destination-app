@@ -6,6 +6,11 @@ const compression = require("compression");
 // const csrf = require("csurf");
 const helmet = require("helmet");
 const bodyParser = require("body-parser");
+const swaggerUi = require("swagger-ui-express");
+const swaggerJSDoc = require("swagger-jsdoc");
+// const YAML = require("yamljs");
+// const authSwaggerDocument = YAML.load("./docs/auth-swagger.yml");
+// const destinationSwaggerDocument = YAML.load("./docs/destination-swagger.yml");
 const path = require("path");
 require("dotenv").config();
 
@@ -76,5 +81,22 @@ app.use((err, req, res, next) => {
     message: err,
   });
 });
+
+// Swagger Documentatios
+
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Destination App API",
+      version: "1.0.0",
+    },
+  },
+  apis: ["./docs/*.yaml"],
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 module.exports = app;

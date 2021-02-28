@@ -1,0 +1,141 @@
+openapi: 3.0.0
+
+info:
+  title: "Destination APP API"
+  description: "API for destination app"
+  version: "1.0.0"
+servers:
+  - url: "http://localhost:3000/api/v1"
+paths: 
+  /destinations:
+    post:
+      description: "Create new destination by admin"
+      tags:
+        - "Destinations"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf: 
+                - $ref: '#/components/schemas/Destination'
+      responses:
+        200:
+          description: "OK"
+        401:
+          description: "Access Denied"
+        422:
+          description: "Validation Error"
+        500:
+          description: "Server Error"
+    get:
+      description: "Get All Destinations"
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: Destination list at particular page  
+        - in: query
+          name: size
+          schema:
+            type: integer
+          description: The numbers of items to return
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: Search items
+        - in: query
+          name: sort
+          schema:
+            type: string
+            enum: [latest, oldest]
+          description: sort destination by latest or oldest
+      tags:
+        - "Destinations"
+      responses:
+        200:
+          description: "OK"
+        500:
+          description: "Server Error"
+  /destinations/{id}:
+    get:
+      description: "Get Destination detail"
+      tags:
+        - "Destinations"
+      responses:
+        200:
+          description: "OK"
+        500:
+          description: "Server Error"
+    put:
+      description: "update destination by admin"
+      tags:
+        - "Destinations"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf: 
+                - $ref: '#/components/schemas/Destination'
+      responses:
+        200:
+          description: "OK"
+        401:
+          description: "Access Denied"
+        422:
+          description: "Validation Error"
+        500:
+          description: "Server Error"
+    delete:
+      description: "delete destination by id"
+      security:
+        - bearerAuth: []
+      tags:
+        - "Destinations"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Destination not found"
+        500:
+          description: "Server Error"
+components:
+  schemas:
+    Destination:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Pantai Mapak"
+        city:
+          type: string
+          example: "Mataram"
+        province:
+          type: string
+          example: "NTB"
+        description:
+          type: string
+          example: "lorem ipsum"
+        images: 
+          type: array
+          example: ["http://example.com/500", "http://example.com/400" ]
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Format of the authorization is 'Bearer JWT_Token'"
+
+  
+
+    
+
+  

@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       rating: DataTypes.INTEGER,
       content: DataTypes.TEXT,
+      isEdited: DataTypes.BOOLEAN,
       destinationId: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,
     },

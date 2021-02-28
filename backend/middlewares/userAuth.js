@@ -6,9 +6,7 @@ exports.verifyUser = async function (req, res, next) {
     const bearerToken = req.headers.authorization.split(" ");
     let accessToken = bearerToken[1];
     if (!accessToken) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Unauthorized, Access Denied" });
+      return res.status(401).json({ message: "Unauthorized, Access Denied" });
     }
 
     try {
@@ -45,9 +43,7 @@ exports.verifyUser = async function (req, res, next) {
       }
     }
   } else {
-    return res
-      .status(401)
-      .json({ success: false, message: "Unauthorized, Access Denied" });
+    return res.status(401).json({ message: "Unauthorized, Access Denied" });
   }
 };
 

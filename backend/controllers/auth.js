@@ -77,7 +77,7 @@ exports.generateRefreshToken = async (req, res) => {
     const { jwt: refreshToken } = req.cookies;
     //send error if no refreshToken is sent
     if (!refreshToken) {
-      return res.status(403).json({ message: "Access denied,token missing!" });
+      return res.status(403).json({ message: "Token is missing" });
     } else {
       //query for the token to check if it is valid:
       const user = await User.findOne({ where: { refreshToken } });
@@ -107,7 +107,7 @@ exports.generateRefreshToken = async (req, res) => {
         // Send new Cookie
         res.cookie("jwt", refreshToken, { httpOnly: true });
 
-        return res.status(200).json({ results: { accessToken } });
+        return res.status(200).json({ accessToken });
       }
     }
   } catch (error) {

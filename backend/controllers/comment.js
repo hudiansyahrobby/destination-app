@@ -16,7 +16,13 @@ exports.create = async (req, res) => {
     if (comment) {
       return res.status(400).json({
         message:
-          "You have commented on this destination, please update your commment instead",
+          "You have commented on this destination, please edit your commment instead",
+      });
+    }
+
+    if (comment.userId !== userId) {
+      return res.status(400).json({
+        message: "Can't update comment that is not yours",
       });
     }
 
@@ -28,22 +34,9 @@ exports.create = async (req, res) => {
     };
     await Comment.create(newComment);
 
-    return res.status(201).json({ message: "Comment added successfully" });
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
-};
-
-exports.get = async (req, res) => {
-  const { id: userId } = req.user.dataValues;
-  try {
-    const comments = await Comment.findAll({
-      where: {
-        userId,
-      },
-    });
-
-    return res.status(200).json({ comments });
+    return res
+      .status(201)
+      .json({ comment: newComment, message: "Comment added successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -98,7 +91,7 @@ exports.remove = async (req, res) => {
     if (comment.userId !== userId) {
       return res
         .status(400)
-        .json({ message: "This comment doesn't belong to this user" });
+        .json({ message: "Can't delete comment that is not yours" });
     }
 
     await Comment.destroy({

@@ -130,7 +130,6 @@ exports.update = async (req, res) => {
     for (const public_id of public_ids) {
       await deleteImageOnCloudinary(public_id);
     }
-
     // Reupload images on cloudinary
 
     const imageURL = [];
@@ -142,7 +141,7 @@ exports.update = async (req, res) => {
       fs.unlinkSync(path);
     }
 
-    const updatedDestination = {
+    const updatedDestinationData = {
       name,
       city,
       province,
@@ -150,13 +149,18 @@ exports.update = async (req, res) => {
       images: imageURL,
     };
 
-    await Destination.update(updatedDestination, {
-      where: { id },
+    const [_, updatedDestination] = await Destination.update(
+      updatedDestinationData,
+      {
+        where: { id },
+        returning: true,
+        plain: true,
+      }
+    );
+    return res.status(200).json({
+      destination: updatedDestination,
+      message: "Destination successfully updated",
     });
-
-    return res
-      .status(400)
-      .json({ message: "Destination successfully updated" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -185,7 +189,7 @@ exports.remove = async (req, res) => {
     }
 
     return res
-      .status(400)
+      .status(200)
       .json({ message: "Destination successfully deleted" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
