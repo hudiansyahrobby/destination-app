@@ -1,6 +1,6 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("UserFavorites", {
+    await queryInterface.createTable("user_favorites", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,7 +11,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Users",
+          model: "users",
           key: "id",
         },
       },
@@ -19,13 +19,13 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Destinations",
+          model: "destinations",
           key: "id",
         },
       },
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("UserFavorites");
+    await queryInterface.dropTable("user_favorites");
   },
 };
