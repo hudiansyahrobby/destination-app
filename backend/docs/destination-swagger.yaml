@@ -9,7 +9,7 @@ servers:
 paths: 
   /destinations:
     post:
-      description: "Create new destination by admin"
+      description: "Create new destination (ONLY ADMIN)"
       tags:
         - "Destinations"
       security:
@@ -17,7 +17,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               allOf: 
                 - $ref: '#/components/schemas/Destination'
@@ -72,7 +72,7 @@ paths:
         500:
           description: "Server Error"
     put:
-      description: "update destination by admin"
+      description: "update destination by id (ONLY ADMIN)"
       tags:
         - "Destinations"
       security:
@@ -80,7 +80,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               allOf: 
                 - $ref: '#/components/schemas/Destination'
@@ -94,7 +94,7 @@ paths:
         500:
           description: "Server Error"
     delete:
-      description: "delete destination by id"
+      description: "Delete destination by id (ONLY ADMIN)"
       security:
         - bearerAuth: []
       tags:
@@ -124,9 +124,8 @@ components:
           type: string
           example: "lorem ipsum"
         images: 
-          type: array
-          example: ["http://example.com/500", "http://example.com/400" ]
-
+          type: string
+          format: binary
   securitySchemes:
     bearerAuth:
       type: http

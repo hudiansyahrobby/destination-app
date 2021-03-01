@@ -1,0 +1,50 @@
+openapi: 3.0.0
+
+info:
+  title: "Destination APP API"
+  description: "API for destination app"
+  version: "1.0.0"
+servers:
+  - url: "http://localhost:3000/api/v1"
+paths: 
+  /destinations/{destinationId}:
+    post:
+      description: "Toggle favorite destination (ONLY USER)"
+      tags:
+        - "Favorites"
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: "OK"
+        401:
+          description: "Access Denied"
+        500:
+          description: "Server Error"
+  /favorites:
+    get:
+      description: "Get User Favorites"
+      tags:
+        - "Favorites"
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: "OK"
+        401:
+          description: "Access Denied"
+        500:
+          description: "Server Error"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Format of the authorization is 'Bearer JWT_Token'"
+
+  
+
+    
+
+  
