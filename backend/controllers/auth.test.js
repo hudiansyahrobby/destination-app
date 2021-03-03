@@ -15,7 +15,7 @@ describe("Auth Endpoints", () => {
         name: "hahaha23",
         email: "manusia@gmail.com",
         password: "Manusia12,",
-        password2: "Manusia12,",
+        passwordConfirmation: "Manusia12,",
       });
       expect(res.statusCode).toBe(422);
       expect(res.body.message).toBe(
@@ -27,7 +27,7 @@ describe("Auth Endpoints", () => {
       const res = await request.post("/api/v1/signup").send({
         email: "manusia@gmail.com",
         password: "Manusia12,",
-        password2: "Manusia12,",
+        passwordConfirmation: "Manusia12,",
       });
       expect(res.statusCode).toBe(422);
       expect(res.body.message).toBe("name is a required field");
@@ -38,7 +38,7 @@ describe("Auth Endpoints", () => {
         name: "hahaha",
         email: "manusiagmail.com",
         password: "Manusia12,",
-        password2: "Manusia12,",
+        passwordConfirmation: "Manusia12,",
       });
       expect(res.statusCode).toBe(422);
       expect(res.body.message).toBe("email is not valid");
@@ -48,7 +48,7 @@ describe("Auth Endpoints", () => {
       const res = await request.post("/api/v1/signup").send({
         name: "hahaha",
         password: "Manusia12,",
-        password2: "Manusia12,",
+        passwordConfirmation: "Manusia12,",
       });
       expect(res.statusCode).toBe(422);
       expect(res.body.message).toBe("email is a required field");
@@ -59,7 +59,7 @@ describe("Auth Endpoints", () => {
         name: "hahaha",
         email: "manusia@gmail.com",
         password: "Maia12,",
-        password2: "Maia12,",
+        passwordConfirmation: "Maia12,",
       });
       expect(res.statusCode).toBe(422);
       expect(res.body.message).toBe("password must be at least 8 characters");
@@ -70,7 +70,7 @@ describe("Auth Endpoints", () => {
         name: "hahaha",
         email: "manusia@gmail.com",
         password: "Manusia12",
-        password2: "Manusia12",
+        passwordConfirmation: "Manusia12",
       });
       expect(res.statusCode).toBe(422);
       expect(res.body.message).toBe(
@@ -82,7 +82,7 @@ describe("Auth Endpoints", () => {
       const res = await request.post("/api/v1/signup").send({
         name: "hahaha",
         email: "manusia@gmail.com",
-        password2: "Manusia12,",
+        passwordConfirmation: "Manusia12,",
       });
       expect(res.statusCode).toBe(422);
       expect(res.body.message).toBe("password is a required field");
@@ -105,7 +105,7 @@ describe("Auth Endpoints", () => {
         name: "hahaha",
         email: "manusia@gmail.com",
         password: "Manusia12,",
-        password2: "Manusia12,dg",
+        passwordConfirmation: "Manusia12,dg",
       });
       expect(res.statusCode).toBe(422);
       expect(res.body.message).toBe("password does not match");
@@ -116,7 +116,7 @@ describe("Auth Endpoints", () => {
         name: "manusia",
         email: "manusia@gmail.com",
         password: "Manusia12,",
-        password2: "Manusia12,",
+        passwordConfirmation: "Manusia12,",
       });
       expect(res.statusCode).toBe(201);
       expect(res.body.user).toHaveProperty("id");
@@ -132,7 +132,7 @@ describe("Auth Endpoints", () => {
         name: "manusia",
         email: "manusia@gmail.com",
         password: "Manusia12,",
-        password2: "Manusia12,",
+        passwordConfirmation: "Manusia12,",
       });
       expect(res.statusCode).toBe(400);
       expect(res.body.message).toBe("This is email has been registered");
@@ -189,8 +189,8 @@ describe("Auth Endpoints", () => {
         password: "Manusia12,",
       });
       expect(res.statusCode).toBe(200);
-      expect(res.body.results).toHaveProperty("accessToken");
-      expect(res.body.message).toHaveProperty("User successfully sign in");
+      expect(res.body).toHaveProperty("accessToken");
+      expect(res.body).toHaveProperty("message", "User successfully sign in");
     });
   });
 

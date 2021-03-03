@@ -99,7 +99,6 @@ exports.remove = async (req, res) => {
       where: {
         id: commentId,
       },
-      returning: true,
     });
 
     return res.status(200).json({
