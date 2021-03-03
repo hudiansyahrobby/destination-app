@@ -34,6 +34,7 @@ const App: React.FC = () => {
           </Suspense>
         </Switch>
       </Router>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 };

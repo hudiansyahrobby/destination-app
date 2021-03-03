@@ -16,19 +16,13 @@ import Wrapper from "../shared/Wrapper";
 import BeatLoader from "react-spinners/BeatLoader";
 import PasswordField from "./PasswordField";
 import { BsFillPersonFill } from "react-icons/bs";
-import { Link as LinkRoute, useHistory } from "react-router-dom";
-import { useMutation } from "react-query";
-import { signup } from "../../API/authAPI";
-import { RegisterData } from "../../interface/AuthInterface";
+import { Link as LinkRoute } from "react-router-dom";
+import { RegisterData } from "../../interfaces/AuthInterface";
 import { registedValidation } from "../../validations/authValidation";
+import useSignup from "../../hooks/useSignup";
 
 const SignupForm: React.FC = () => {
-  const history = useHistory();
-  const { mutateAsync, isLoading, isError, error } = useMutation(signup, {
-    onSuccess: () => {
-      history.push("/login");
-    },
-  });
+  const { isError, mutateAsync, error, isLoading } = useSignup();
 
   let customError: any = {};
   customError = error;

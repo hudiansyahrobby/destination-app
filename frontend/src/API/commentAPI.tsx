@@ -1,5 +1,5 @@
 import axios from "../axios";
-import { CommentData } from "../interface/CommentInterface";
+import { CommentData } from "../interfaces/CommentInterface";
 
 export const addComment = async (commentData: CommentData) => {
   axios.post("/comments", commentData);

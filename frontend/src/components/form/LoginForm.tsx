@@ -15,20 +15,12 @@ import { GrMail } from "react-icons/gr";
 import Wrapper from "../shared/Wrapper";
 import BeatLoader from "react-spinners/BeatLoader";
 import PasswordField from "./PasswordField";
-import { Link as LinkRoute, useHistory } from "react-router-dom";
-import { useMutation } from "react-query";
-import { login } from "../../API/authAPI";
-import { LoginData } from "../../interface/AuthInterface";
+import { Link as LinkRoute } from "react-router-dom";
+import { LoginData } from "../../interfaces/AuthInterface";
+import useLogin from "../../hooks/useLogin";
 
 const LoginForm: React.FC = () => {
-  const history = useHistory();
-  const { mutateAsync, isLoading, isError, error } = useMutation(login, {
-    onSuccess: (data) => {
-      console.log(data);
-      localStorage.setItem("token", "TEST");
-      history.push("/");
-    },
-  });
+  const { isError, mutateAsync, error, isLoading } = useLogin();
 
   let customError: any = {};
   customError = error;

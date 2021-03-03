@@ -4,7 +4,7 @@ const { User } = require("../models");
 exports.verifyUser = async function (req, res, next) {
   if (req.headers.authorization) {
     const bearerToken = req.headers.authorization.split(" ");
-    console.log(bearerToken);
+
     let accessToken = bearerToken[1];
     if (!accessToken) {
       return res.status(401).json({ message: "Unauthorized, Access Denied" });

@@ -1,5 +1,5 @@
 import axios from "../axios";
-import { LoginData, RegisterData } from "../interface/AuthInterface";
+import { LoginData, RegisterData } from "../interfaces/AuthInterface";
 
 export const signup = async (userData: RegisterData) => {
   await axios.post("/signup", userData);

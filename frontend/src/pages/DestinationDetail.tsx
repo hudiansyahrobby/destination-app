@@ -10,8 +10,14 @@ import DestinationInfo from "../components/DestinationInfo";
 import TabItems from "../components/tabs/TabItems";
 import FloatingButton from "../components/button/FloatingButton";
 import { MdFavorite } from "react-icons/md";
+import useDestination from "../hooks/useDestination";
+import { useParams } from "react-router";
 
 const DestinationDetail = () => {
+  const { id } = useParams() as any;
+
+  const { data, isLoading, isError, error } = useDestination(id);
+
   const items = [
     {
       name: "Information",

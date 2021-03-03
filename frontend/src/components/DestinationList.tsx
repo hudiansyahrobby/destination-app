@@ -1,12 +1,11 @@
 import { Box, Flex, Button } from "@chakra-ui/react";
-import { useInfiniteQuery } from "react-query";
 import React from "react";
-import { getAllDestinations } from "../API/destinationAPI";
 import Cards from "./card/Cards";
 import { useInView } from "react-intersection-observer";
 import { DotLoader } from "react-spinners";
 import CardSkeletons from "./skeleton/CardSkeletons";
 import { useLocation } from "react-router";
+import useDestinations from "../hooks/useDestinations";
 
 const DestinationList: React.FC = () => {
   const { pathname } = useLocation();
@@ -15,28 +14,14 @@ const DestinationList: React.FC = () => {
     threshold: 0,
   });
 
-  const fetchDestinations = ({ pageParam = 0 }) => {
-    return getAllDestinations(pageParam);
-  };
-
   const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isError,
     isLoading,
-  } = useInfiniteQuery("destinations", fetchDestinations, {
-    getNextPageParam: (lastPage, pages) => {
-      const hasNextPage = lastPage.currentPage + 1 < lastPage.totalPages;
-      let nextPage = false;
-      if (hasNextPage) {
-        nextPage = lastPage.currentPage + 1;
-      }
-
-      return nextPage;
-    },
-  });
+    hasNextPage,
+    fetchNextPage,
+    isError,
+    data,
+    isFetchingNextPage,
+  } = useDestinations();
 
   React.useEffect(() => {
     if (inView && hasNextPage) {
