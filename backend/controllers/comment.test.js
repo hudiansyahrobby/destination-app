@@ -2,74 +2,26 @@ const app = require("../server");
 const supertest = require("supertest");
 const { sequelize } = require("../models");
 const { authUserTest } = require("../helpers/test/authUserTest");
-const {
-  createDestinationTest,
-} = require("../helpers/test/createDestinationTest");
 const request = supertest(app);
 
 let firstUserToken;
 let secondUserToken;
 
-beforeAll((done) => {
+beforeAll(async (done) => {
   const firstUser = {
-    name: "robby hudiansyah",
-    email: "hudiansyah@gmail.com",
-    password: "Hudiansyah12,",
-    password2: "Hudiansyah12,",
+    email: "john@gmail.com",
+    password: "1234567890",
   };
 
   const secondUser = {
-    name: "hudiansyah",
-    email: "hudiansyah2@gmail.com",
-    password: "Hudiansyah12,",
-    password2: "Hudiansyah12,",
+    email: "john2@gmail.com",
+    password: "1234567890",
   };
 
-  const admin = {
-    name: "robby",
-    email: "hudiansyah3@gmail.com",
-    isAdmin: true,
-    password: "Hudiansyah12,",
-    password2: "Hudiansyah12,",
-  };
+  firstUserToken = await authUserTest(firstUser);
+  secondUserToken = await authUserTest(secondUser);
 
-  firstUserToken = authUserTest(firstUser);
-  secondUserToken = authUserTest(secondUser);
-
-  const adminToken = authUserTest(admin);
-
-  const newDestination = {
-    name: "Pantai Kuta",
-    province: "Nusa Tenggara Barat",
-    city: "Mataram",
-    images:
-      "http://www.lombokindonesia.org/wp-content/uploads/2012/03/kuta-beach-lombok.jpg",
-    description:
-      "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators",
-  };
-
-  createDestinationTest(newDestination, adminToken);
-
-  // request
-  // .post("/api/v1/signup")
-  // .send({
-  //   name: "robby hudiansyah",
-  //   email: "hudiansyah@gmail.com",
-  //   password: "Hudiansyah12,",
-  //   password2: "Hudiansyah12,",
-  // })
-  // .end((err, response) => {
-  //   request
-  //     .post("/api/v1/login")
-  //     .send({
-  //       email: "hudiansyah@gmail.com",
-  //       password: "Hudiansyah12,",
-  //     })
-  //     .end((err, response) => {
-  //       token = response.body.results.accessToken; // save the token!
-  //       done();
-  //     });
-  // });
+  done();
 });
 
 afterAll((done) => {
@@ -157,7 +109,7 @@ describe("Comment Endpoints", () => {
         })
         .set("Authorization", `Bearer ${firstUserToken}`);
       expect(res.statusCode).toBe(201);
-      expect(res.body.comment).toHaveProperty("rating", 4);
+      expect(res.body.comment).toHaveProperty("rating", 5);
       expect(res.body.comment).toHaveProperty("content", "lorem ipsum");
       expect(res.body.comment).toHaveProperty("isEdited", false);
       expect(res.body.comment).toHaveProperty("destinationId", 1);
@@ -258,7 +210,7 @@ describe("Comment Endpoints", () => {
         })
         .set("Authorization", `Bearer ${secondUserToken}`);
       expect(res.statusCode).toBe(400);
-      expect(res.body.message).toBe("Can't update comment that is not yours");
+      expect(res.body.message).toBe("This comment doesn't belong to this user");
     });
 
     it("When there is no error, update comment", async () => {
@@ -270,7 +222,7 @@ describe("Comment Endpoints", () => {
         })
         .set("Authorization", `Bearer ${firstUserToken}`);
 
-      expect(res.statusCode).toBe(201);
+      expect(res.statusCode).toBe(200);
       expect(res.body.comment).toHaveProperty("rating", 3);
       expect(res.body.comment).toHaveProperty("content", "lorem ipsum dolor");
       expect(res.body.comment).toHaveProperty("isEdited", true);
@@ -283,7 +235,7 @@ describe("Comment Endpoints", () => {
   describe("delete comment", () => {
     it("When comment doesn't exist, then send error ", async () => {
       const res = await request
-        .delete("/api/v1/destinations/1/comments/1")
+        .delete("/api/v1/destinations/comments/10")
         .set("Authorization", `Bearer ${firstUserToken}`);
 
       expect(res.statusCode).toBe(400);
@@ -291,14 +243,14 @@ describe("Comment Endpoints", () => {
     });
 
     it("When user not logged in, then send error ", async () => {
-      const res = await request.delete("/api/v1/destinations/1/comments/1");
+      const res = await request.delete("/api/v1/destinations/comments/1");
       expect(res.statusCode).toBe(401);
       expect(res.body.message).toBe("Unauthorized, Access Denied");
     });
 
     it("When user try to delete other's comment, then send error", async () => {
       const res = await request
-        .put("/api/v1/destinations/1/comments/1")
+        .delete("/api/v1/destinations/comments/1")
         .set("Authorization", `Bearer ${secondUserToken}`);
       expect(res.statusCode).toBe(400);
       expect(res.body.message).toBe("Can't delete comment that is not yours");
@@ -306,7 +258,7 @@ describe("Comment Endpoints", () => {
 
     it("When there is no error, delete comment", async () => {
       const res = await request
-        .put("/api/v1/destinations/1/comments/1")
+        .delete("/api/v1/destinations/comments/1")
         .set("Authorization", `Bearer ${firstUserToken}`);
 
       expect(res.statusCode).toBe(200);
