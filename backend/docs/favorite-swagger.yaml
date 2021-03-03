@@ -5,11 +5,18 @@ info:
   description: "API for destination app"
   version: "1.0.0"
 servers:
-  - url: "http://localhost:3000/api/v1"
+  - url: http://localhost:3000/api/v1
 paths: 
-  /destinations/{destinationId}:
+  /favorites/{destinationId}:
     post:
       description: "Toggle favorite destination (ONLY USER)"
+      parameters:
+      - in: path
+        required: true
+        name: destinationId
+        schema:
+          type: integer
+        description: Destination ID
       tags:
         - "Favorites"
       security:
@@ -41,7 +48,6 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: "Format of the authorization is 'Bearer JWT_Token'"
 
   
 

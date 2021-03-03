@@ -15,10 +15,7 @@ exports.toggle = async (req, res) => {
 
       return res.status(200).json({
         message: "Successfully deleted from favorite item",
-        item: {
-          destinationId,
-          userId,
-        },
+        item: favoritedItem,
       });
     } else {
       const newFavoriteItem = {
@@ -26,13 +23,10 @@ exports.toggle = async (req, res) => {
         destinationId,
       };
 
-      await UserFavorite.create(newFavoriteItem);
+      const _newFavoriteItem = await UserFavorite.create(newFavoriteItem);
       return res.status(201).json({
         message: "Successfully added to favorite item",
-        item: {
-          destinationId,
-          userId,
-        },
+        item: _newFavoriteItem,
       });
     }
   } catch (error) {
@@ -44,7 +38,7 @@ exports.get = async (req, res) => {
   const { id: userId } = req.user.dataValues;
 
   try {
-    const favoritedItems = await User.findAll({
+    const user = await User.findOne({
       where: {
         id: userId,
       },
@@ -59,7 +53,7 @@ exports.get = async (req, res) => {
       ],
     });
 
-    return res.status(200).json({ favoritedItems });
+    return res.status(200).json({ user });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

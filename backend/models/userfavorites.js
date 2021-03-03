@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "UserFavorite",
       timestamps: false,
+      tableName: "user_favorites",
     }
   );
   return UserFavorite;

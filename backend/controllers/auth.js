@@ -24,8 +24,16 @@ exports.register = async (req, res) => {
     };
 
     //Create new user if not exist in DB
-    await User.create(newUser);
-    return res.status(201).json({ message: "User successfully registered" });
+    const _newUser = await User.create(newUser);
+
+    delete _newUser.dataValues.password;
+    delete _newUser.dataValues.refreshToken;
+    delete _newUser.dataValues.resetPasswordToken;
+    delete _newUser.dataValues.resetTokenExpired;
+
+    return res
+      .status(201)
+      .json({ message: "User successfully registered", user: _newUser });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -65,7 +73,7 @@ exports.login = async (req, res, next) => {
 
     res.cookie("jwt", refreshToken, { httpOnly: true });
 
-    res.status(200).json({ accessToken });
+    res.status(200).json({ message: "User successfully sign in", accessToken });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
@@ -107,7 +115,9 @@ exports.generateRefreshToken = async (req, res) => {
         // Send new Cookie
         res.cookie("jwt", refreshToken, { httpOnly: true });
 
-        return res.status(200).json({ accessToken });
+        return res
+          .status(200)
+          .json({ message: "Token refreshed successfully", accessToken });
       }
     }
   } catch (error) {

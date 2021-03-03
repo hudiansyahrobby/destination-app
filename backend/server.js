@@ -91,6 +91,11 @@ const options = {
       title: "Destination App API",
       version: "1.0.0",
     },
+    servers: [
+      {
+        url: "http://localhost:8000/api/v1",
+      },
+    ],
   },
   apis: ["./docs/*.yaml"],
 };

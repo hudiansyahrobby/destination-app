@@ -7,12 +7,14 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       User.belongsToMany(models.Destination, {
         foreignKey: "destinationId",
-        through: "UserFavorites",
+        through: "user_favorites",
         timestamps: false,
         as: "favorite",
       });
 
-      User.hasMany(models.Comment);
+      User.hasMany(models.Comment, {
+        foreignKey: "userId",
+      });
     }
   }
   User.init(
@@ -28,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "User",
+      tableName: "users",
     }
   );
 

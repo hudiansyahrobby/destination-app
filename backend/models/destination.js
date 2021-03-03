@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Destination.belongsToMany(models.User, {
         foreignKey: "userId",
-        through: "UserFavorites",
+        through: "user_favorites",
         timestamps: false,
       });
 
@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Destination",
+      tableName: "destinations",
     }
   );
   return Destination;

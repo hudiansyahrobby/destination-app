@@ -5,11 +5,18 @@ info:
   description: "API for destination app"
   version: "1.0.0"
 servers:
-  - url: "http://localhost:3000/api/v1"
+  - url: http://localhost:3000/api/v1
 paths: 
   /destinations/{destinationId}/comments:
     post:
       description: "Create new comment (ONLY USER)"
+      parameters:
+      - in: path
+        required: true
+        name: destinationId
+        schema:
+          type: integer
+        description: Destination ID
       tags:
         - "Comments"
       security:
@@ -22,8 +29,8 @@ paths:
               allOf: 
                 - $ref: '#/components/schemas/Comment'
       responses:
-        200:
-          description: "OK"
+        201:
+          description: "Created"
         401:
           description: "Access Denied"
         422:
@@ -33,6 +40,19 @@ paths:
   /destinations/{destinationId}/comments/{commentId}:
     put:
       description: "update comment by id (ONLY USER)"
+      parameters:
+      - in: path
+        required: true
+        name: destinationId
+        schema:
+          type: integer
+        description: Destination ID
+      - in: path
+        required: true
+        name: commentId
+        schema:
+          type: integer
+        description: Comment ID
       tags:
         - "Comments"
       security:
@@ -53,19 +73,27 @@ paths:
           description: "Validation Error"
         500:
           description: "Server Error"
-    delete:
-      description: "Delete comment by id (ONLY ADMIN)"
-      security:
-        - bearerAuth: []
-      tags:
-        - "Comments"
-      responses:
-        200:
-          description: "OK"
-        400:
-          description: "Comment not found"
-        500:
-          description: "Server Error"
+  /destinations/comments/{commentId}:
+      delete:
+        description: "Delete comment by id (ONLY ADMIN)"
+        parameters:
+        - in: path
+          required: true
+          name: commentId
+          schema:
+            type: integer
+          description: Comment ID
+        security:
+          - bearerAuth: []
+        tags:
+          - "Comments"
+        responses:
+          200:
+            description: "OK"
+          400:
+            description: "Comment not found"
+          500:
+            description: "Server Error"
 components:
   schemas:
     Comment:
@@ -82,7 +110,6 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: "Format of the authorization is 'Bearer JWT_Token'"
 
   
 

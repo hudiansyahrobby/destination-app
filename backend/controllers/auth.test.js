@@ -119,7 +119,12 @@ describe("Auth Endpoints", () => {
         password2: "Manusia12,",
       });
       expect(res.statusCode).toBe(201);
-      expect(res.body.message).toBe("User successfully registered");
+      expect(res.body.user).toHaveProperty("id");
+      expect(res.body.user).toHaveProperty("name", "manusia");
+      expect(res.body.user).toHaveProperty("email", "manusia@gmail.com");
+      expect(res.body.user).toHaveProperty("isAdmin", false);
+      expect(res.body.user).toHaveProperty("updatedAt");
+      expect(res.body.user).toHaveProperty("createdAt");
     });
 
     it("If user already registered, send error", async () => {
@@ -185,6 +190,7 @@ describe("Auth Endpoints", () => {
       });
       expect(res.statusCode).toBe(200);
       expect(res.body.results).toHaveProperty("accessToken");
+      expect(res.body.message).toHaveProperty("User successfully sign in");
     });
   });
 

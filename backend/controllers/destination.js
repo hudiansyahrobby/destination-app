@@ -42,11 +42,12 @@ exports.create = async (req, res) => {
       images: imageURL,
     };
 
-    await Destination.create(newDestination);
+    const createdDestination = await Destination.create(newDestination);
 
-    return res
-      .status(201)
-      .json({ message: "Destination has successsfully created" });
+    return res.status(201).json({
+      message: "Destination has successsfully created",
+      destination: createdDestination,
+    });
   } catch (error) {
     deleteImages(images);
     return res.status(500).json({ message: error });
@@ -57,7 +58,7 @@ exports.get = async (req, res) => {
   const { page, size, search, sort } = req.query;
 
   const searchCondition = search
-    ? { name: { [Op.like]: `%${search}%` } }
+    ? { name: { [Op.iLike]: `%${search}%` } }
     : null;
 
   const { limit, offset } = getPagination(page, size);
@@ -72,7 +73,6 @@ exports.get = async (req, res) => {
     });
 
     const destinations = getPaginationData(response, page, limit);
-
     return res.status(200).json({ destinations });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -101,8 +101,6 @@ exports.getDetail = async (req, res) => {
         },
       ],
     });
-
-    // const destination = await Destination.findByPk(id);
 
     if (!destination) {
       return res.status(400).json({ message: "Destination not found" });
@@ -188,9 +186,10 @@ exports.remove = async (req, res) => {
       await deleteImageOnCloudinary(public_id);
     }
 
-    return res
-      .status(200)
-      .json({ message: "Destination successfully deleted" });
+    return res.status(200).json({
+      message: "Destination successfully deleted",
+      destination: destination,
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

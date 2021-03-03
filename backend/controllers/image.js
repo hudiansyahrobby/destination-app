@@ -7,7 +7,7 @@ exports.uploadImages = (req, res, next) => {
     if (err instanceof multer.MulterError) {
       if (err.code === "LIMIT_UNEXPECTED_FILE") {
         return res
-          .status(400)
+          .status(422)
           .json({ message: "Too many files to upload. Max is 5 images" });
       }
     } else if (err) {
@@ -15,7 +15,7 @@ exports.uploadImages = (req, res, next) => {
     }
 
     if (req.files.length === 0) {
-      return res.status(400).json({ message: "Upload at least one image" });
+      return res.status(422).json({ message: "Upload at least one image" });
     }
 
     next();

@@ -20,34 +20,29 @@ exports.create = async (req, res) => {
       });
     }
 
-    if (comment.userId !== userId) {
-      return res.status(400).json({
-        message: "Can't update comment that is not yours",
-      });
-    }
-
     const newComment = {
       rating,
       content,
       destinationId,
       userId,
     };
-    await Comment.create(newComment);
+
+    const _newComment = await Comment.create(newComment);
 
     return res
       .status(201)
-      .json({ comment: newComment, message: "Comment added successfully" });
+      .json({ comment: _newComment, message: "Comment added successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
 exports.update = async (req, res) => {
-  const { id } = req.params;
-  const { rating, content, destinationId } = req.body;
+  const { destinationId, commentId } = req.params;
+  const { rating, content } = req.body;
   const { id: userId } = req.user.dataValues;
   try {
-    const comment = await Comment.findByPk(id);
+    const comment = await Comment.findByPk(commentId);
 
     if (!comment) {
       return res.status(400).json({ message: "Comment not found" });
@@ -64,25 +59,31 @@ exports.update = async (req, res) => {
       content,
       destinationId,
       userId,
+      isEdited: true,
     };
 
-    await Comment.update(updatedComment, {
+    const [_, _updatedComment] = await Comment.update(updatedComment, {
       where: {
-        id,
+        id: commentId,
       },
+      returning: true,
+      plain: true,
     });
-    return res.status(200).json({ message: "Comment updated successfully" });
+    return res.status(200).json({
+      message: "Comment updated successfully",
+      comment: _updatedComment,
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
 exports.remove = async (req, res) => {
-  const { id } = req.params;
+  const { commentId } = req.params;
   const { id: userId } = req.user.dataValues;
 
   try {
-    const comment = await Comment.findByPk(id);
+    const comment = await Comment.findByPk(commentId);
 
     if (!comment) {
       return res.status(400).json({ message: "Comment not found" });
@@ -96,11 +97,15 @@ exports.remove = async (req, res) => {
 
     await Comment.destroy({
       where: {
-        id,
+        id: commentId,
       },
+      returning: true,
     });
 
-    return res.status(200).json({ message: "Comment deleted successfully" });
+    return res.status(200).json({
+      message: "Comment deleted successfully",
+      comment,
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

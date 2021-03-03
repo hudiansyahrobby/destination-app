@@ -21,10 +21,6 @@ router.put(
   update
 );
 
-router.delete(
-  "/destinations/:destinationId/comments/:commentId",
-  verifyUser,
-  remove
-);
+router.delete("/destinations/comments/:commentId", verifyUser, remove);
 
 module.exports = router;
