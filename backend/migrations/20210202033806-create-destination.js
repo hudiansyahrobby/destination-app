@@ -23,6 +23,14 @@ module.exports = {
       images: {
         type: Sequelize.ARRAY(Sequelize.STRING),
       },
+      categoryId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "categories",
+          key: "id",
+        },
+      },
       createdAt: {
         type: Sequelize.DATE,
       },

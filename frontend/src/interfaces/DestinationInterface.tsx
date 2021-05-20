@@ -3,5 +3,5 @@ export interface DestinationData {
   city: string;
   province: string;
   description: string;
-  images: Array<string> | string;
+  images: Array<string>;
 }

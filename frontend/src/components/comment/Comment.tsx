@@ -4,6 +4,7 @@ import CommentForm from "./CommentForm";
 import CommentItem from "./CommentItem";
 
 interface CommentItemProps {
+  id: number;
   name: string;
   avatar: string;
   content: string;
@@ -18,7 +19,7 @@ const Comment: React.FC<CommentProps> = ({ comments }) => {
   return (
     <Box>
       {comments?.map((comment) => {
-        return <CommentItem {...comment} />;
+        return <CommentItem {...comment} key={comment.id} />;
       })}
       <CommentForm />
     </Box>

@@ -22,6 +22,7 @@ export const getAllDestinations = async (page = 0, title?: string) => {
     endpoint += `&title=${title}`;
   }
   const { data } = await axios.get(endpoint);
+  console.log("DAAT", data);
   return data.destinations;
 };
 

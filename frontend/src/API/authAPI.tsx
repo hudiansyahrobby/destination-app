@@ -2,17 +2,22 @@ import axios from "../axios";
 import { LoginData, RegisterData } from "../interfaces/AuthInterface";
 
 export const signup = async (userData: RegisterData) => {
-  await axios.post("/signup", userData);
+  const { data } = await axios.post("/signup", userData);
+  return data;
 };
 
 export const login = async (userData: LoginData) => {
-  await axios.post("/login", userData);
+  const { data } = await axios.post("/login", userData);
+  console.log("LGIN", data);
+  return data;
 };
 
 export const logout = async () => {
-  await axios.post("/logout");
+  const { data } = await axios.post("/logout");
+  return data;
 };
 
 export const generateRefreshToken = async () => {
-  await axios.post("/refresh-token");
+  const { data } = await axios.post("/refresh-token");
+  return data;
 };

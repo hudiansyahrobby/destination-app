@@ -43,7 +43,7 @@ exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email }, raw: true });
 
     if (!user) {
       return res
@@ -73,7 +73,11 @@ exports.login = async (req, res, next) => {
 
     res.cookie("jwt", refreshToken, { httpOnly: true });
 
-    res.status(200).json({ message: "User successfully sign in", accessToken });
+    delete user.password;
+
+    res
+      .status(200)
+      .json({ message: "User successfully sign in", accessToken, user });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }

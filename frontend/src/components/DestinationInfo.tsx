@@ -2,13 +2,19 @@ import { Box, chakra, Tag } from "@chakra-ui/react";
 import React from "react";
 import { GiStarsStack } from "react-icons/gi";
 import { MdLocationOn, MdSettings } from "react-icons/md";
+import { DestinationData } from "../interfaces/DestinationInterface";
 
 import Rating from "./rating/Rating";
 import TagList from "./TagList";
 import Paragraph from "./typography/Paragraph";
 import TextWithIcon from "./typography/TextWithIcon";
 
-const DestinationInfo = () => {
+interface DestinationInfoProps {
+  destination: DestinationData;
+}
+
+const DestinationInfo: React.FC<DestinationInfoProps> = ({ destination }) => {
+  console.log("DESTANTON", destination);
   const LocationIcon = chakra(MdLocationOn);
   const StarStackIcon = chakra(GiStarsStack);
   const CategoryIcon = chakra(MdSettings);
@@ -16,7 +22,7 @@ const DestinationInfo = () => {
     <>
       <TextWithIcon text="Location" icon={LocationIcon}>
         <Tag color="teal" fontWeight="bold">
-          Lombok
+          {destination.city} - {destination.province}
         </Tag>
       </TextWithIcon>
 

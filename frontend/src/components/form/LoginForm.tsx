@@ -73,13 +73,13 @@ const LoginForm: React.FC = () => {
               <Flex mt={3} justifyContent="space-between">
                 <Link
                   as={LinkRoute}
-                  to="/login"
+                  to="/signup"
                   _hover={{
                     textDecoration: "none",
                     color: "green.600",
                   }}
                 >
-                  Already have an account ? Login
+                  Don't have an account ? Sign up
                 </Link>
                 <Link
                   as={LinkRoute}
@@ -95,7 +95,7 @@ const LoginForm: React.FC = () => {
               <Flex justifyContent="flex-end">
                 <Button
                   mt={4}
-                  colorScheme="teal"
+                  colorScheme="whatsapp"
                   isLoading={isLoading}
                   type="submit"
                   spinner={<BeatLoader size={8} color="white" />}

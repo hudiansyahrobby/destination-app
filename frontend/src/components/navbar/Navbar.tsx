@@ -8,7 +8,6 @@ import DrawerMenu from "../DrawerMenu";
 
 const Navbar: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = React.useRef();
 
   return (
     <Flex
@@ -23,8 +22,8 @@ const Navbar: React.FC = () => {
       alignItems="center"
       justifyContent="space-between"
     >
-      <MenuIcon onOpen={onOpen} btnRef={btnRef} />
-      <DrawerMenu isOpen={isOpen} onClose={onClose} btnRef={btnRef} />
+      <MenuIcon onOpen={onOpen} />
+      <DrawerMenu isOpen={isOpen} onClose={onClose} />
       <Logo title="Destination App" />
       <SearchBar placeholder="Search Destination" />
       <MenuBar />

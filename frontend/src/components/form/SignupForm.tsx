@@ -106,7 +106,7 @@ const SignupForm: React.FC = () => {
               <Flex justifyContent="flex-end">
                 <Button
                   mt={4}
-                  colorScheme="teal"
+                  colorScheme="whatsapp"
                   isLoading={isLoading}
                   type="submit"
                   spinner={<BeatLoader size={8} color="white" />}

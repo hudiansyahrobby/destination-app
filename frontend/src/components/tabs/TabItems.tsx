@@ -22,6 +22,7 @@ interface TabItemsProps {
 const TabItems: React.FC<TabItemsProps> = ({ items }) => {
   const comments = [
     {
+      id: 1,
       name: "Dan Abramov",
       avatar: "https://bit.ly/dan-abramov",
       content:
@@ -34,7 +35,7 @@ const TabItems: React.FC<TabItemsProps> = ({ items }) => {
       <TabList mb="1em">
         {items.map(({ name, icon }) => {
           return (
-            <Tab icon _selected={{ color: "teal", outlineColor: "teal" }}>
+            <Tab _selected={{ color: "teal", outlineColor: "teal" }} key={name}>
               {icon}
               <Text ml="4px">{name}</Text>
             </Tab>
@@ -51,13 +52,6 @@ const TabItems: React.FC<TabItemsProps> = ({ items }) => {
         <TabPanel>
           <Paragraph>{items[2].content}</Paragraph>
         </TabPanel>
-        {/* {items.map(({ content }) => {
-          return (
-            <TabPanel>
-              <Paragraph>{content}</Paragraph>
-            </TabPanel>
-          );
-        })} */}
       </TabPanels>
     </Tabs>
   );

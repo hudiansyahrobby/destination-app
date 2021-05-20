@@ -9,6 +9,8 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false,
       });
 
+      Destination.belongsTo(models.Categories);
+
       Destination.hasMany(models.Comment, {
         foreignKey: "destinationId",
         as: "comments",

@@ -1,0 +1,132 @@
+openapi: 3.0.0
+
+info:
+  title: "Destination APP API"
+  description: "API for destination app"
+  version: "1.0.0"
+servers:
+  - url: http://localhost:3000/api/v1
+paths: 
+  /categories:
+    post:
+      description: "Create new category (ONLY ADMIN)"
+      tags:
+        - "Categories"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf: 
+                - $ref: '#/components/schemas/Category'
+      responses:
+        201:
+          description: "Created"
+        401:
+          description: "Access Denied"
+        422:
+          description: "Validation Error"
+        500:
+          description: "Server Error"
+    get:
+      description: "Get All Categories"
+      tags:
+        - "Categories"
+      responses:
+        200:
+          description: "OK"
+        500:
+          description: "Server Error"
+  /categories/{id}:
+    get:
+      description: "Get Category by ID"
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+          description: Get Category by ID
+      tags:
+        - "Categories"
+      responses:
+        200:
+          description: "OK"
+        404:
+          description: "Not Found"
+        500:
+          description: "Server Error"
+    put:
+      description: "update category by id (ONLY ADMIN)"
+      tags:
+        - "Categories"
+      parameters:
+      - in: path
+        required: true
+        name: id
+        schema:
+          type: integer
+        description: update category by id  
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf: 
+                - $ref: '#/components/schemas/Category'
+      responses:
+        200:
+          description: "OK"
+        401:
+          description: "Access Denied"
+        404:
+          description: "Not Found"
+        422:
+          description: "Validation Error"
+        500:
+          description: "Server Error"
+    delete:
+      description: "Delete category by id (ONLY ADMIN)"
+      parameters:
+      - in: path
+        required: true
+        name: id
+        schema:
+          type: integer
+        description: Delete category by id  
+      security:
+        - bearerAuth: []
+      tags:
+        - "Categories"
+      responses:
+        200:
+          description: "OK"
+        401:
+          description: "Access Denied"
+        404:
+          description: "Not Found"
+        500:
+          description: "Server Error"
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "sungai"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  
+
+    
+
+  

@@ -13,8 +13,10 @@ const Hero: React.FC = () => {
         justifyContent="center"
         flexDirection="column"
       >
-        <Heading as="h1">Welcome To Destination App</Heading>
-        <Text mt={5}>
+        <Heading as="h1" mt={{ sm: 8 }} textTransform={{ sm: "uppercase" }}>
+          Welcome To Destination App
+        </Heading>
+        <Text my={5}>
           Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laboriosam
           amet maxime quaerat, libero error officia ipsa consectetur nulla quae
           autem officiis placeat nam soluta illo earum iste mollitia cum minus

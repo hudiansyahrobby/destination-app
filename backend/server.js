@@ -1,28 +1,25 @@
 const express = require("express");
 const cors = require("cors");
-const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const compression = require("compression");
-// const csrf = require("csurf");
 const helmet = require("helmet");
-const bodyParser = require("body-parser");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
-// const YAML = require("yamljs");
-// const authSwaggerDocument = YAML.load("./docs/auth-swagger.yml");
-// const destinationSwaggerDocument = YAML.load("./docs/destination-swagger.yml");
 const path = require("path");
 require("dotenv").config();
+const logger = require("./helpers/logger");
+const { sendErrorDev, sendErrorProd } = require("./errorHandler/errorResponse");
 
 const authRoute = require("./routes/auth");
 const destinationRoute = require("./routes/destination");
 const favoriteRoute = require("./routes/favorite");
 const commentRoute = require("./routes/comment");
+const categoryRoute = require("./routes/category");
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -35,52 +32,9 @@ app.use(
 
 app.use(cookieParser());
 
-// app.use(
-//   csrf({
-//     cookie: {
-//       httpOnly: true,
-//     },
-//   })
-// );
-
 app.use(compression());
 
 app.use(helmet());
-
-app.use(logger("dev"));
-
-// app.all("*", (req, res) => {
-//   console.log(req.headers);
-//   res.cookie("XSRF-TOKEN", req.csrfToken());
-// });
-
-// app.use((req, res, next) => {
-//   const csrfTokenToSendToFrontEnd = req.csrfToken();
-//   console.log("csrfTokenToSendToFrontEnd: ", csrfTokenToSendToFrontEnd);
-//   // this cookie must be XSRF-TOKEN, because already defined as default in Angular.
-//   res.cookie("XSRF-TOKEN", csrfTokenToSendToFrontEnd);
-//   next();
-// });
-
-// app.use((err, req, res, next) => {
-//   // console.log(req.headers);
-//   if (err.code !== "EBADCSRFTOKEN") return next(err);
-//   return res.status(403).json({ message: "Invalid CSRF Token" });
-// });
-
-app.use("/api/v1", authRoute);
-app.use("/api/v1", destinationRoute);
-app.use("/api/v1", favoriteRoute);
-app.use("/api/v1", commentRoute);
-
-app.use((err, req, res, next) => {
-  if (err.code !== "EBADCSRFTOKEN") {
-    return next(err);
-  }
-  res.status(403).json({
-    message: err,
-  });
-});
 
 // Swagger Documentatios
 
@@ -103,5 +57,67 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.use("/api/v1", authRoute);
+app.use("/api/v1", destinationRoute);
+app.use("/api/v1", favoriteRoute);
+app.use("/api/v1", commentRoute);
+app.use("/api/v1", categoryRoute);
+
+app.all("*", (req, res, next) => {
+  next(
+    new AppError(
+      `Can't find ${req.originalUrl} on this server!`,
+      404,
+      "not-found"
+    )
+  );
+});
+
+app.use((err, req, res, next) => {
+  if (process.env.NODE_ENV === "development") {
+    if (err?.response) {
+      logger.log({ level: "error", message: err.response.data.message });
+      sendErrorDev(err.response.data, res);
+    } else {
+      logger.log({ level: "error", message: err.message });
+      err.status = err.status || 500;
+      sendErrorDev(err, res);
+    }
+  } else if (process.env.NODE_ENV === "production") {
+    if (err?.response) {
+      logger.log({ level: "error", message: err.response.data.message });
+      sendErrorProd(err.response.data, res);
+    } else {
+      logger.log({ level: "error", message: err.message });
+      err.status = err.status || 500;
+      sendErrorProd(err, res);
+    }
+  }
+});
+
+process.on("unhandledRejection", (err) => {
+  logger.log({
+    level: "error",
+    message: `${err.name} - ${err.message}`,
+  });
+  logger.log({
+    level: "info",
+    message: "UNHANDLED REJECTION! 💥 Shutting down...",
+  });
+});
+
+process.on("uncaughtException", (err) => {
+  logger.log({
+    level: "error",
+    message: `${err.name} - ${err.message}`,
+  });
+  logger.log({
+    level: "info",
+    message: "UNHANDLED REJECTION! 💥 Shutting down...",
+  });
+
+  process.exit(1);
+});
 
 module.exports = app;

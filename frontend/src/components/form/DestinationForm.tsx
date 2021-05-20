@@ -11,15 +11,12 @@ import InputImages from "./InputImages";
 
 interface DestinationFormProps {
   editMode: boolean;
-  destinations?: any;
 }
 
-const DestinationForm: React.FC<DestinationFormProps> = ({
-  editMode,
-  destinations,
-}) => {
+const DestinationForm: React.FC<DestinationFormProps> = ({ editMode }) => {
   const pageTitle = editMode ? "Edit Destination" : "Add Destination";
   const buttonTitle = editMode ? "Update" : "Add";
+
   return (
     <Box as="section">
       <Heading as="h1" textAlign="center" mt="120px">

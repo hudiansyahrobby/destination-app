@@ -2,9 +2,7 @@ const app = require("../server");
 const supertest = require("supertest");
 const { sequelize } = require("../models");
 const { authUserTest } = require("../helpers/test/authUserTest");
-// const {
-//   createDestinationTest,
-// } = require("../helpers/test/createDestinationTest");
+
 const request = supertest(app);
 
 let token;
@@ -15,8 +13,6 @@ beforeAll(async (done) => {
   };
 
   token = await authUserTest(user);
-
-  // createDestinationTest(newDestination, adminToken);
 
   done();
 });

@@ -11,7 +11,7 @@ const TagList: React.FC<TagListProps> = ({ tags }) => {
     <Box>
       {tags.map((tag) => {
         return (
-          <Tag mr="3px" color="teal" fontWeight="bold">
+          <Tag mr="3px" color="teal" fontWeight="bold" key={tag}>
             {capitalizeFirstLetter(tag)}
           </Tag>
         );

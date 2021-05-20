@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, VStack } from "@chakra-ui/react";
+import { Box, Heading, VStack } from "@chakra-ui/react";
 import { IoMdInformationCircle } from "react-icons/io";
 import { FaComments, FaMapMarkedAlt } from "react-icons/fa";
 
@@ -12,44 +12,53 @@ import FloatingButton from "../components/button/FloatingButton";
 import { MdFavorite } from "react-icons/md";
 import useDestination from "../hooks/useDestination";
 import { useParams } from "react-router";
+import Loading from "../components/Loading";
+import { DestinationData } from "../interfaces/DestinationInterface";
 
 const DestinationDetail = () => {
   const { id } = useParams() as any;
 
   const { data, isLoading, isError, error } = useDestination(id);
 
+  const destination: DestinationData = data;
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (isError) {
+    return <Heading>Error</Heading>;
+  }
+
   const items = [
     {
       name: "Information",
       icon: <IoMdInformationCircle />,
-      content:
-        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Culpa a, quos at repudiandae soluta sed modi voluptatibus facilis, mollitia similique enim reiciendis impedit facere eveniet labore, fugit vero quis eum laborum corporis? Blanditiis rerum at modi saepe error deserunt laboriosam doloremque, suscipit illum eum quaerat omnis voluptatum magni accusamus? Distinctio.",
+      content: destination?.description,
     },
     {
       name: "Comments",
       icon: <FaComments />,
-      content:
-        "dolor sit amet consectetur adipisicing elit. Culpa a, quos at repudiandae soluta sed modi voluptatibus facilis, mollitia similique enim reiciendis impedit facere eveniet labore, fugit vero quis eum laborum corporis? Blanditiis rerum at modi saepe error deserunt laboriosam doloremque, suscipit illum eum quaerat omnis voluptatum magni accusamus? Distinctio.",
+      content: destination?.description,
     },
     {
       name: "Location",
       icon: <FaMapMarkedAlt />,
-      content:
-        "amet consectetur adipisicing elit. Culpa a, quos at repudiandae soluta sed modi voluptatibus facilis, mollitia similique enim reiciendis impedit facere eveniet labore, fugit vero quis eum laborum corporis? Blanditiis rerum at modi saepe error deserunt laboriosam doloremque, suscipit illum eum quaerat omnis voluptatum magni accusamus? Distinctio.",
+      content: destination?.description,
     },
   ];
   return (
     <Layout>
       <Box mt="75px">
-        <Carousel />
+        <Carousel images={destination.images} />
         <VStack mx={10} align="flex-start" spacing="15px" mt="50px">
           <Box ml="5px">
-            <Title>Pantai Kuta</Title>
+            <Title>{destination.name}</Title>
           </Box>
-          <DestinationInfo />
+          <DestinationInfo destination={destination} />
         </VStack>
       </Box>
-      <Box mt="50px" mx={10}>
+      <Box my="50px" mx={10}>
         <TabItems items={items} />
       </Box>
       <FloatingButton icon={MdFavorite} onClick={() => console.log("HAHA")} />

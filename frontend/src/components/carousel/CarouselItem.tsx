@@ -10,7 +10,7 @@ const CarouselItem: React.FC<CarouselItemProps> = ({ image }) => {
     <Box>
       <Image
         src={image}
-        objectFit="cover"
+        objectFit="contain"
         width="full"
         height="500px"
         fallbackSrc="https://via.placeholder.com/150"

@@ -1,36 +1,31 @@
 import {
+  Divider,
+  Drawer,
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-  Input,
-  Drawer,
   Flex,
-  Stack,
-  Divider,
-  VStack,
   StackDivider,
+  VStack,
 } from "@chakra-ui/react";
 import React from "react";
-import { link } from "../data/link";
+import { adminLink, link, userLink } from "../data/link";
+import useAuthenticated from "../hooks/useAuthenticated";
 import NavMenu from "./navbar/NavMenu";
 
 interface DrawerProps {
-  btnRef: any;
   isOpen: boolean;
   onClose: () => void;
 }
 
-const DrawerMenu: React.FC<DrawerProps> = ({ btnRef, onClose, isOpen }) => {
+const DrawerMenu: React.FC<DrawerProps> = ({ onClose, isOpen }) => {
+  const { isAdmin, isAuthenticated } = useAuthenticated();
+
   return (
     <>
-      <Drawer
-        isOpen={isOpen}
-        onClose={onClose}
-        placement="left"
-        finalFocusRef={btnRef}
-      >
+      <Drawer isOpen={isOpen} onClose={onClose} placement="left">
         <DrawerOverlay>
           <DrawerContent>
             <DrawerCloseButton />
@@ -43,9 +38,26 @@ const DrawerMenu: React.FC<DrawerProps> = ({ btnRef, onClose, isOpen }) => {
                   align="start"
                   divider={<StackDivider borderColor="gray.200" />}
                 >
-                  {link.map(({ title, link }) => (
-                    <NavMenu title={title} link={link} />
-                  ))}
+                  {/* Admin Menu */}
+                  {isAuthenticated &&
+                    isAdmin &&
+                    adminLink.map(({ title, link }) => (
+                      <NavMenu title={title} link={link} key={title} />
+                    ))}
+
+                  {/* Authenticated User Menu but Not Admin */}
+                  {isAuthenticated &&
+                    !isAdmin &&
+                    userLink.map(({ title, link }) => (
+                      <NavMenu title={title} link={link} key={title} />
+                    ))}
+
+                  {/* Guest Menu */}
+                  {!isAuthenticated &&
+                    !isAdmin &&
+                    link.map(({ title, link }) => (
+                      <NavMenu title={title} link={link} key={title} />
+                    ))}
                 </VStack>
               </Flex>
             </DrawerBody>

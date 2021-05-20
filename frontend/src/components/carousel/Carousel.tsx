@@ -5,7 +5,7 @@ import Slider from "react-slick";
 import CarouselItem from "./CarouselItem";
 import { Box } from "@chakra-ui/react";
 
-export default class Carousel extends Component {
+export default class Carousel extends Component<{ images: string[] }> {
   render() {
     const settings = {
       centerMode: true,
@@ -23,12 +23,14 @@ export default class Carousel extends Component {
         },
       ],
     };
+    console.log("PROPS", this.props.images);
+
     return (
       <Box>
         <Slider {...settings}>
-          <CarouselItem image="https://bit.ly/sage-adebayo" />
-          <CarouselItem image="https://bit.ly/sage-adebayo" />
-          <CarouselItem image="https://bit.ly/sage-adebayo" />
+          {this.props.images?.map((image, index) => (
+            <CarouselItem image={image} key={index} />
+          ))}
         </Slider>
       </Box>
     );

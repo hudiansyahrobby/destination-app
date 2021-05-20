@@ -4,10 +4,9 @@ import { MdMenu } from "react-icons/md";
 
 interface MenuIconProps {
   onOpen: () => void;
-  btnRef: any;
 }
 
-const MenuIcon: React.FC<MenuIconProps> = ({ onOpen, btnRef }) => {
+const MenuIcon: React.FC<MenuIconProps> = ({ onOpen }) => {
   const MenuIcon = chakra(MdMenu);
 
   return (
@@ -15,8 +14,8 @@ const MenuIcon: React.FC<MenuIconProps> = ({ onOpen, btnRef }) => {
       size="36px"
       mr="10px"
       display={{ md: "none" }}
+      cursor="pointer"
       onClick={onOpen}
-      ref={btnRef}
     />
   );
 };

@@ -23,7 +23,7 @@ function GlobalFilter({ globalFilter, setGlobalFilter }: any) {
   }, 200);
 
   return (
-    <Box as="div" mt="120px">
+    <Box as="div" mt="50px">
       Search:{" "}
       <Input
         mt="10px"
