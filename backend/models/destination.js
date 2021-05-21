@@ -9,7 +9,9 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false,
       });
 
-      Destination.belongsTo(models.Categories);
+      Destination.belongsTo(models.Categories, {
+        foreignKey: "categoryId",
+      });
 
       Destination.hasMany(models.Comment, {
         foreignKey: "destinationId",
@@ -24,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       province: DataTypes.STRING,
       description: DataTypes.TEXT,
       images: DataTypes.ARRAY(DataTypes.STRING),
+      categoryId: DataTypes.INTEGER,
     },
     {
       sequelize,

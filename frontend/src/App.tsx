@@ -14,6 +14,7 @@ const Destination = React.lazy(() => import("./pages/Destination"));
 const DestinationDetail = React.lazy(() => import("./pages/DestinationDetail"));
 const AddDestination = React.lazy(() => import("./pages/AddDestination"));
 const AdminDashboard = React.lazy(() => import("./pages/AdminDashboard"));
+const AdminCategories = React.lazy(() => import("./pages/AdminCategories"));
 const Unauthorized = React.lazy(() => import("./pages/Unauthorized"));
 
 const App: React.FC = () => {
@@ -29,6 +30,11 @@ const App: React.FC = () => {
               component={AddDestination}
             />
             <AdminRoute exact path="/admin/" component={AdminDashboard} />
+            <AdminRoute
+              exact
+              path="/admin/categories"
+              component={AdminCategories}
+            />
             <Route exact path="/forget-password" component={ForgetPassword} />
             <Route path="/forget-password/:token" component={ChangePassword} />
             <Route path="/destination/:id" component={DestinationDetail} />

@@ -32,9 +32,7 @@ const findCategoryById = async (id) => {
 };
 
 const findAllCategories = async () => {
-  console.log("ALA");
   const categories = await Categories.findAll();
-  console.log("ASAHSDI");
   return categories;
 };
 

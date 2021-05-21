@@ -228,6 +228,7 @@ describe("Destination Endpoints", () => {
   describe("Get destination list", () => {
     it("Get destinations", async () => {
       const res = await request.get("/api/v1/destinations");
+      console.log(res.body.destinations);
       expect(res.statusCode).toBe(200);
       expect(res.body.destinations).toHaveProperty("currentPage", 0);
       expect(res.body.destinations).toHaveProperty("results");
@@ -238,6 +239,7 @@ describe("Destination Endpoints", () => {
 
     it("Get destinations Detail", async () => {
       const res = await request.get("/api/v1/destinations/1");
+      console.log(res.body);
       expect(res.statusCode).toBe(200);
       expect(res.body.destination).toHaveProperty("name", "Pantai Ampenan");
       expect(res.body.destination).toHaveProperty(

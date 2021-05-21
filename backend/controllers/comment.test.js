@@ -109,7 +109,6 @@ describe("Comment Endpoints", () => {
         })
         .set("Authorization", `Bearer ${firstUserToken}`);
       expect(res.statusCode).toBe(201);
-      expect(res.body.comment).toHaveProperty("id");
       expect(res.body.comment).toHaveProperty("rating", 5);
       expect(res.body.comment).toHaveProperty("content", "lorem ipsum");
       expect(res.body.comment).toHaveProperty("isEdited", false);
@@ -264,12 +263,6 @@ describe("Comment Endpoints", () => {
 
       expect(res.statusCode).toBe(200);
       expect(res.body.message).toBe("Comment deleted successfully");
-      expect(res.body.comment).toHaveProperty("id", 1);
-      expect(res.body.comment).toHaveProperty("rating");
-      expect(res.body.comment).toHaveProperty("content");
-      expect(res.body.comment).toHaveProperty("destinationId");
-      expect(res.body.comment).toHaveProperty("userId");
-      expect(res.body.comment).toHaveProperty("isEdited");
     });
   });
 });

@@ -23,7 +23,7 @@ const findCategoryById = catchAsync(async (req, res, next) => {
   });
 });
 
-const findAllCategories = async (req, res, next) => {
+const findAllCategories = catchAsync(async (req, res, next) => {
   const categories = await categoryService.findAllCategories();
 
   return res.status(200).json({
@@ -31,7 +31,7 @@ const findAllCategories = async (req, res, next) => {
     data: categories,
     status: 200,
   });
-};
+});
 
 const deleteCategoryById = catchAsync(async (req, res, next) => {
   const { id } = req.params;

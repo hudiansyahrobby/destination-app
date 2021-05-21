@@ -75,6 +75,7 @@ exports.get = async (req, res) => {
     const destinations = getPaginationData(response, page, limit);
     return res.status(200).json({ destinations });
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json({ message: error.message });
   }
 };

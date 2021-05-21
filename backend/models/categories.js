@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class Categories extends Model {
     static associate(models) {
       Categories.hasMany(models.Destination, {
-        foreignKey: "destinationId",
+        foreignKey: "categoryId",
       });
     }
   }

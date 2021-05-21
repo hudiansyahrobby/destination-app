@@ -1,14 +1,14 @@
 import { SimpleGrid } from "@chakra-ui/layout";
 import {
-  FaUmbrellaBeach,
-  FaUserAlt,
   FaBuffer,
   FaComment,
   FaPencilAlt,
+  FaUmbrellaBeach,
 } from "react-icons/fa";
 import AdminCard from "../components/card/AdminCard";
 import Layout from "../components/Layout";
 import Title from "../components/typography/Title";
+import useCategories from "../hooks/categories/useCategories";
 import useDestinations from "../hooks/useDestinations";
 
 const AdminDashboard = () => {
@@ -16,8 +16,9 @@ const AdminDashboard = () => {
     data: destination,
     isLoading: isDestinationLoading,
   } = useDestinations();
-  console.log("DESTINATION", destination);
 
+  const { data: categories, isLoading: isCategoriesLoading } = useCategories();
+  console.log("CAT", categories);
   return (
     <Layout>
       <Title textAlign="center" mt="32" fontSize="4xl">
@@ -29,10 +30,9 @@ const AdminDashboard = () => {
           title={`${destination?.pages[0]?.totalItems} Jumlah Destinasi`}
           to="/admin/destinations"
         />
-        <AdminCard icon={FaUserAlt} title="Jumlah Pengguna" to="/admin/users" />
         <AdminCard
           icon={FaBuffer}
-          title="Jumlah Kategori"
+          title={`${categories.length} Jumlah Kategori`}
           to="/admin/categories"
         />
         <AdminCard

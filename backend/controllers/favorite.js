@@ -24,7 +24,6 @@ exports.toggle = async (req, res) => {
       };
 
       const _newFavoriteItem = await UserFavorite.create(newFavoriteItem);
-
       return res.status(201).json({
         message: "Successfully added to favorite item",
         item: _newFavoriteItem,
