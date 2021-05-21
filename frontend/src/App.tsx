@@ -4,6 +4,7 @@ import Loading from "./components/Loading";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import AdminRoute from "./hooks/AdminRoute";
+import AddCategory from "./pages/AddCategory";
 
 const Home = React.lazy(() => import("./pages/Home"));
 const Login = React.lazy(() => import("./pages/Login"));
@@ -25,15 +26,33 @@ const App: React.FC = () => {
       <Router>
         <Switch>
           <Suspense fallback={<Loading />}>
-            <AdminRoute
-              path="/admin/destinations/create"
-              component={AddDestination}
-            />
             <AdminRoute exact path="/admin/" component={AdminDashboard} />
             <AdminRoute
               exact
               path="/admin/categories"
               component={AdminCategories}
+            />
+
+            <AdminRoute
+              path="/admin/destinations/create"
+              component={AddDestination}
+            />
+
+            <AdminRoute
+              path="/admin/destinations/edit:id"
+              component={AddDestination}
+            />
+
+            <AdminRoute
+              exact
+              path="/admin/categories/create"
+              component={AddCategory}
+            />
+
+            <AdminRoute
+              exact
+              path="/admin/categories/edit/:id"
+              component={AddCategory}
             />
             <Route exact path="/forget-password" component={ForgetPassword} />
             <Route path="/forget-password/:token" component={ChangePassword} />

@@ -1,6 +1,5 @@
 import Layout from "../components/Layout";
 import Loading from "../components/Loading";
-import TableHead from "../components/table/TableHead";
 import Title from "../components/typography/Title";
 import useCategories from "../hooks/categories/useCategories";
 

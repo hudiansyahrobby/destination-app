@@ -1,7 +1,7 @@
 import { QueryClient, useQuery } from "react-query";
 import { getCategoryById } from "../../API/categoriesAPI";
 
-const useDestination = (categoryId: number) => {
+const useCategory = (categoryId: number) => {
   const queryClient: any = new QueryClient();
   return useQuery(
     ["categories", categoryId],
@@ -12,8 +12,9 @@ const useDestination = (categoryId: number) => {
           .getQueryData("categories")
           ?.find((category: any) => category.id === categoryId);
       },
+      enabled: !!categoryId,
     }
   );
 };
 
-export default useDestination;
+export default useCategory;

@@ -8,7 +8,7 @@ export const addCategory = async (categoryData: CategoryData) => {
 
 export const getCategoryById = async (categoryId: number) => {
   const { data } = await axios.get(`/categories/${categoryId}`);
-  return data;
+  return data.data;
 };
 
 export const getAllCategories = async () => {

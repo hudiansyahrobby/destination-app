@@ -7,6 +7,7 @@ import {
 } from "react-icons/fa";
 import AdminCard from "../components/card/AdminCard";
 import Layout from "../components/Layout";
+import Loading from "../components/Loading";
 import Title from "../components/typography/Title";
 import useCategories from "../hooks/categories/useCategories";
 import useDestinations from "../hooks/useDestinations";
@@ -18,7 +19,10 @@ const AdminDashboard = () => {
   } = useDestinations();
 
   const { data: categories, isLoading: isCategoriesLoading } = useCategories();
-  console.log("CAT", categories);
+
+  if (isDestinationLoading || isCategoriesLoading) {
+    return <Loading />;
+  }
   return (
     <Layout>
       <Title textAlign="center" mt="32" fontSize="4xl">
@@ -32,13 +36,13 @@ const AdminDashboard = () => {
         />
         <AdminCard
           icon={FaBuffer}
-          title={`${categories.length} Jumlah Kategori`}
+          title={`${categories?.length} Jumlah Kategori`}
           to="/admin/categories"
         />
         <AdminCard
           icon={FaComment}
-          title="Jumlah Komentar"
-          to="/admin/comments"
+          title="Buat Kategori Baru"
+          to="/admin/categories/create"
         />
         <AdminCard
           icon={FaPencilAlt}

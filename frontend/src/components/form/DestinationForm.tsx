@@ -8,6 +8,10 @@ import { FaMapMarkedAlt, FaUmbrellaBeach } from "react-icons/fa";
 import TextEditor from "./TextEditor";
 import InputSelect from "./InputSelect";
 import InputImages from "./InputImages";
+import useCategories from "../../hooks/categories/useCategories";
+import useAddCategory from "../../hooks/categories/useAddCategory";
+import { CategoryData } from "../../interfaces/CategoryInterface";
+import { capitalizeEachWord } from "../../helpers/capitalizeEachWord";
 
 interface DestinationFormProps {
   editMode: boolean;
@@ -17,13 +21,42 @@ const DestinationForm: React.FC<DestinationFormProps> = ({ editMode }) => {
   const pageTitle = editMode ? "Edit Destination" : "Add Destination";
   const buttonTitle = editMode ? "Update" : "Add";
 
+  const {
+    isLoading: isCategoryLoading,
+    data: categories,
+    isError: isCategoryError,
+    refetch,
+  } = useCategories();
+
+  const {
+    mutateAsync,
+    isLoading: isAddCategoryLoading,
+    isError: isAddCategoryError,
+  } = useAddCategory();
+
+  const onCreateCategory = async (name: string) => {
+    const newCategory = { name };
+    await mutateAsync(newCategory, {
+      onSuccess: () => {
+        refetch();
+      },
+    });
+  };
+
+  const options = categories?.map((category: { id: string; name: string }) => {
+    return {
+      value: category?.id,
+      label: capitalizeEachWord(category?.name),
+    };
+  });
+
   return (
     <Box as="section">
       <Heading as="h1" textAlign="center" mt="120px">
         {pageTitle}
       </Heading>
       <Formik
-        initialValues={{ name: "", location: "", category: "", image: "" }}
+        initialValues={{ name: "", location: "", category: "", images: [] }}
         onSubmit={(values, actions) => {}}
       >
         {({ isSubmitting }) => (
@@ -52,6 +85,9 @@ const DestinationForm: React.FC<DestinationFormProps> = ({ editMode }) => {
                       name="Categories"
                       label="Categories"
                       placeholder="Categories..."
+                      isLoading={isCategoryLoading || isAddCategoryLoading}
+                      options={options}
+                      onHandleCreate={onCreateCategory}
                     />
 
                     <InputImages name="images" label="Upload Images" />
