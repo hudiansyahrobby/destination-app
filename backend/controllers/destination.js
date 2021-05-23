@@ -13,14 +13,13 @@ const { deleteImages } = require("../helpers/deleteImages");
 const { getPublicId } = require("../helpers/getPublicId");
 
 exports.create = async (req, res) => {
-  const { name, city, province, description, images } = req.body;
+  const { name, city, province, description, categoryId, images } = req.body;
   try {
     const destination = await Destination.findOne({
       where: { name, city, province },
     });
 
     if (destination) {
-      deleteImages(images);
       return res.status(400).json({ message: "Destination is exist" });
     }
 
@@ -31,7 +30,6 @@ exports.create = async (req, res) => {
       const path = `public/${file}`;
       const newPath = await uploadToCloudinary(path);
       imageURL.push(newPath);
-      fs.unlinkSync(path);
     }
 
     const newDestination = {
@@ -39,6 +37,7 @@ exports.create = async (req, res) => {
       city,
       province,
       description,
+      categoryId,
       images: imageURL,
     };
 
@@ -75,7 +74,6 @@ exports.get = async (req, res) => {
     const destinations = getPaginationData(response, page, limit);
     return res.status(200).json({ destinations });
   } catch (error) {
-    console.log(error.message);
     return res.status(500).json({ message: error.message });
   }
 };
@@ -123,12 +121,6 @@ exports.update = async (req, res) => {
       return res.status(400).json({ message: "Destination not found" });
     }
 
-    // Delete images on Cloudinary
-    const public_ids = getPublicId(destination.images);
-
-    for (const public_id of public_ids) {
-      await deleteImageOnCloudinary(public_id);
-    }
     // Reupload images on cloudinary
 
     const imageURL = [];
@@ -137,7 +129,6 @@ exports.update = async (req, res) => {
       const path = `public/${file}`;
       const newPath = await uploadToCloudinary(path);
       imageURL.push(newPath);
-      fs.unlinkSync(path);
     }
 
     const updatedDestinationData = {
@@ -176,13 +167,13 @@ exports.remove = async (req, res) => {
         .status(400)
         .json({ message: "Error deleting, destination not found" });
     }
-
+    console.log("OKOKO");
     const public_ids = getPublicId(destination.images);
 
     await Destination.destroy({
       where: { id },
     });
-
+    console.log("HAHAHAH");
     for (const public_id of public_ids) {
       await deleteImageOnCloudinary(public_id);
     }

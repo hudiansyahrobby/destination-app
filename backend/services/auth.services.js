@@ -1,13 +1,14 @@
 const { User } = require("../models");
 const AppError = require("../errorHandler/AppError");
 const { getToken } = require("../helpers/getToken");
+const bcrypt = require("bcryptjs");
 
-exports.findUserByEmail = async (email) => {
+const findUserByEmail = async (email) => {
   const user = await User.findOne({ where: { email } });
   return user;
 };
 
-exports.checkPassword = async (password1, password2) => {
+const checkPassword = async (password1, password2) => {
   const isMatch = await bcrypt.compare(password1, password2);
 
   if (!isMatch) {
@@ -17,8 +18,8 @@ exports.checkPassword = async (password1, password2) => {
   return isMatch;
 };
 
-exports.registerUser = async (registerData) => {
-  const user = findUserByEmail(registerData.email);
+const registerUser = async (registerData) => {
+  const user = await findUserByEmail(registerData.email);
 
   if (user) {
     throw new AppError(
@@ -43,8 +44,8 @@ exports.registerUser = async (registerData) => {
   return _newUser;
 };
 
-exports.loginUser = async (loginData) => {
-  const user = findUserByEmail(loginData.email);
+const loginUser = async (loginData) => {
+  const user = await findUserByEmail(loginData.email);
 
   if (!user) {
     throw new AppError(`Email or Password is not valid`, 400, "not-valid");
@@ -64,9 +65,17 @@ exports.loginUser = async (loginData) => {
     process.env.REFRESH_TOKEN_LIFE
   );
 
+  delete user.dataValues.password;
   return {
     user,
     accessToken,
     refreshToken,
   };
+};
+
+module.exports = {
+  checkPassword,
+  findUserByEmail,
+  loginUser,
+  registerUser,
 };

@@ -17,11 +17,11 @@ interface CardsProps {
 
 const Cards: React.FC<CardsProps> = ({ destinations }): JSX.Element => {
   return (
-    <SimpleGrid columns={[1, 2, 3]} gap={6} mt={15}>
+    <>
       {destinations?.map((destination) => {
         return <Card key={destination.id} {...destination} />;
       })}
-    </SimpleGrid>
+    </>
   );
 };
 export default Cards;

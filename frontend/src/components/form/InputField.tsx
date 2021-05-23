@@ -7,9 +7,8 @@ import {
   InputLeftElement,
   InputRightElement,
 } from "@chakra-ui/react";
-import { useField } from "formik";
-import { type } from "os";
 import React, { InputHTMLAttributes } from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
 
 type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
@@ -18,21 +17,37 @@ type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   type: string;
+  error: string | undefined;
+  register: UseFormRegisterReturn;
 };
 
-const InputField: React.FC<InputFieldProps> = React.memo((props) => {
-  const [field, { error, touched }] = useField(props);
-  const { name, label, placeholder, leftIcon, rightIcon, type } = props;
+const InputField: React.FC<InputFieldProps> = (props) => {
+  const {
+    name,
+    label,
+    placeholder,
+    leftIcon,
+    rightIcon,
+    type,
+    error,
+    register,
+  } = props;
 
   return (
-    <FormControl isInvalid={!!error && !!touched}>
+    <FormControl isInvalid={!!error}>
       {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
       <InputGroup>
         {leftIcon && (
           <InputLeftElement pointerEvents="none" children={leftIcon} />
         )}
 
-        <Input {...field} id={name} placeholder={placeholder} type={type} />
+        <Input
+          {...register}
+          id={name}
+          placeholder={placeholder}
+          type={type}
+          autoComplete="off"
+        />
 
         {rightIcon && <InputRightElement children={rightIcon} />}
       </InputGroup>
@@ -40,6 +55,6 @@ const InputField: React.FC<InputFieldProps> = React.memo((props) => {
       <FormErrorMessage>{error}</FormErrorMessage>
     </FormControl>
   );
-});
+};
 
-export default React.memo(InputField);
+export default InputField;

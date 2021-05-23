@@ -1,4 +1,4 @@
-import { Box, Flex, Button } from "@chakra-ui/react";
+import { Box, Flex, Button, SimpleGrid } from "@chakra-ui/react";
 import React from "react";
 import Cards from "./card/Cards";
 import { useInView } from "react-intersection-observer";
@@ -39,9 +39,11 @@ const DestinationList: React.FC = () => {
   return (
     <>
       <Box mx={{ base: 3, md: 8 }} mt={15}>
-        {data?.pages?.map((page) => {
-          return <Cards key={page.currentPage} destinations={page.results} />;
-        })}
+        <SimpleGrid columns={[1, 2, 3]} gap={6} mt={15}>
+          {data?.pages?.map((page) => {
+            return <Cards key={page.currentPage} destinations={page.results} />;
+          })}
+        </SimpleGrid>
       </Box>
       {pathname !== "/" && (
         <Flex justifyContent="center" my="20px">

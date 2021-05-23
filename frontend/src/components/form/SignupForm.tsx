@@ -1,5 +1,3 @@
-import React from "react";
-import { Formik, Form, Field } from "formik";
 import {
   Alert,
   AlertIcon,
@@ -10,16 +8,19 @@ import {
   Link,
   Stack,
 } from "@chakra-ui/react";
-import InputField from "./InputField";
-import { GrMail } from "react-icons/gr";
-import Wrapper from "../shared/Wrapper";
-import BeatLoader from "react-spinners/BeatLoader";
-import PasswordField from "./PasswordField";
+import { yupResolver } from "@hookform/resolvers/yup";
+import React from "react";
+import { useForm } from "react-hook-form";
 import { BsFillPersonFill } from "react-icons/bs";
+import { GrMail } from "react-icons/gr";
 import { Link as LinkRoute } from "react-router-dom";
-import { RegisterData } from "../../interfaces/AuthInterface";
-import { registedValidation } from "../../validations/authValidation";
+import BeatLoader from "react-spinners/BeatLoader";
 import useSignup from "../../hooks/useSignup";
+import { RegisterData } from "../../interfaces/AuthInterface";
+import Wrapper from "../shared/Wrapper";
+import InputField from "./InputField";
+import PasswordField from "./PasswordField";
+import { registedValidation } from "../../validations/authValidation";
 
 const SignupForm: React.FC = () => {
   const { isError, mutateAsync, error, isLoading } = useSignup();
@@ -27,9 +28,18 @@ const SignupForm: React.FC = () => {
   let customError: any = {};
   customError = error;
 
-  const onSignupUser = async (signupData: RegisterData) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterData>({
+    resolver: yupResolver(registedValidation),
+  });
+
+  const onSignupUser = handleSubmit(async (signupData: RegisterData) => {
     await mutateAsync(signupData);
-  };
+  });
+
   return (
     <Box as="section">
       <Heading as="h1" textAlign="center" mt="120px">
@@ -43,81 +53,71 @@ const SignupForm: React.FC = () => {
           </Alert>
         </Box>
       )}
-      <Formik
-        initialValues={{
-          name: "",
-          email: "",
-          password: "",
-          passwordConfirmation: "",
-        }}
-        validationSchema={registedValidation}
-        onSubmit={(values, actions) => {
-          onSignupUser(values);
-        }}
-      >
-        {() => (
-          <Form>
-            <Wrapper size="sm">
-              <Field>
-                {() => (
-                  <Stack spacing={4} mt={8}>
-                    <InputField
-                      name="name"
-                      type="text"
-                      label="Name"
-                      leftIcon={<BsFillPersonFill size={20} />}
-                      placeholder="Name..."
-                    />
 
-                    <InputField
-                      name="email"
-                      type="email"
-                      label="Email"
-                      leftIcon={<GrMail size={18} />}
-                      placeholder="Email..."
-                    />
+      <Wrapper size="sm">
+        <Box as="form" onSubmit={onSignupUser}>
+          <Stack spacing={4} mt={8}>
+            <InputField
+              register={{ ...register("name") }}
+              error={errors.name?.message}
+              name="name"
+              type="text"
+              label="Name"
+              leftIcon={<BsFillPersonFill size={20} />}
+              placeholder="Name..."
+            />
 
-                    <PasswordField
-                      label="Password"
-                      placeholder="Password..."
-                      name="password"
-                    />
+            <InputField
+              register={{ ...register("email") }}
+              error={errors.email?.message}
+              name="email"
+              type="email"
+              label="Email"
+              leftIcon={<GrMail size={18} />}
+              placeholder="Email..."
+            />
 
-                    <PasswordField
-                      label="Password Confirmation"
-                      placeholder="Password confirmation..."
-                      name="passwordConfirmation"
-                    />
-                  </Stack>
-                )}
-              </Field>
-              <Link
-                as={LinkRoute}
-                to="/login"
-                _hover={{
-                  textDecoration: "none",
-                  color: "green.600",
-                }}
-                display="block"
-                mt={3}
-              >
-                Already have an account ? Login
-              </Link>
-              <Flex justifyContent="flex-end">
-                <Button
-                  mt={4}
-                  colorScheme="whatsapp"
-                  isLoading={isLoading}
-                  type="submit"
-                  spinner={<BeatLoader size={8} color="white" />}
-                >
-                  Signup
-                </Button>
-              </Flex>
-            </Wrapper>
-          </Form>
-        )}
-      </Formik>
+            <PasswordField
+              register={{ ...register("password") }}
+              error={errors.password?.message}
+              label="Password"
+              placeholder="Password..."
+              name="password"
+            />
+
+            <PasswordField
+              register={{ ...register("passwordConfirmation") }}
+              error={errors.passwordConfirmation?.message}
+              label="Password Confirmation"
+              placeholder="Password confirmation..."
+              name="passwordConfirmation"
+            />
+          </Stack>
+          <Link
+            as={LinkRoute}
+            to="/login"
+            _hover={{
+              textDecoration: "none",
+              color: "green.600",
+            }}
+            display="block"
+            mt={3}
+          >
+            Already have an account ? Login
+          </Link>
+          <Flex justifyContent="flex-end">
+            <Button
+              mt={4}
+              colorScheme="whatsapp"
+              isLoading={isLoading}
+              type="submit"
+              spinner={<BeatLoader size={8} color="white" />}
+            >
+              Signup
+            </Button>
+          </Flex>
+        </Box>
+      </Wrapper>
     </Box>
   );
 };

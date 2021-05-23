@@ -16,6 +16,7 @@ export const destinationValidation = Yup.object({
       message: "city should only contain alphapet or space",
     })
     .required("city is required"),
+  categoryId: Yup.number().required("CategoryId is required"),
   description: Yup.string()
     .min(50, "Should be at least 50 characters long")
     .required("description is required"),

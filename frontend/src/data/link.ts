@@ -19,8 +19,8 @@ export const adminLink = [
     link: "/destination",
   },
   {
-    title: "My Profile",
-    link: "/my-profile",
+    title: "Favorite",
+    link: "/favorite-destination",
   },
   {
     title: "Admin Dashboard",
@@ -38,7 +38,7 @@ export const userLink = [
     link: "/destination",
   },
   {
-    title: "My Profile",
-    link: "/my-profile",
+    title: "Favorite",
+    link: "/favorite-destination",
   },
 ];

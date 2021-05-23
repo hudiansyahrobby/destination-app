@@ -5,11 +5,14 @@ import {
   FormLabel,
   InputGroup,
 } from "@chakra-ui/react";
-import { useField, useFormikContext } from "formik";
-import React from "react";
-import { InputHTMLAttributes } from "react";
-import { UseMutateAsyncFunction } from "react-query";
+import React, { InputHTMLAttributes } from "react";
+import {
+  UseFormGetValues,
+  UseFormRegisterReturn,
+  UseFormSetValue,
+} from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
+import { DestinationData } from "../../interfaces/DestinationInterface";
 
 type InputSelectProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
@@ -21,11 +24,13 @@ type InputSelectProps = InputHTMLAttributes<HTMLInputElement> & {
     value: string;
     label: string;
   }>;
+  error: string | undefined;
+  register: UseFormRegisterReturn;
+  setValue: UseFormSetValue<DestinationData>;
+  getValue: UseFormGetValues<DestinationData>;
 };
 
 const InputSelect: React.FC<InputSelectProps> = (props) => {
-  const [field, { error, touched }] = useField(props);
-  const { setFieldValue } = useFormikContext();
   const {
     name,
     label,
@@ -33,34 +38,51 @@ const InputSelect: React.FC<InputSelectProps> = (props) => {
     isLoading,
     onHandleCreate,
     options,
+    error,
+    register,
+    setValue,
+    getValue,
   } = props;
 
   const Select = chakra(CreatableSelect);
+  const [select, setSelect] = React.useState<string>("");
+
+  React.useEffect(() => {
+    console.log("AHHAHA", getValue("categoryId"));
+    setSelect(getValue("categoryId"));
+  }, [getValue]);
 
   return (
-    <FormControl isInvalid={!!error && !!touched}>
+    <FormControl isInvalid={!!error}>
       <FormLabel htmlFor={name}>{label}</FormLabel>
       <InputGroup width="full">
         <Select
+          {...register}
           width="full"
           maxMenuHeight={200}
           isClearable
           placeholder={placeholder}
           isLoading={isLoading}
-          {...field}
           formatCreateLabel={(inputValue: string) => `create "${inputValue}"`}
           onChange={(option: any) => {
             if (option) {
-              setFieldValue(field.name, option.value);
+              setSelect(option.value);
+              setValue("categoryId", option.value);
             } else {
-              setFieldValue(field.name, "");
+              setSelect("");
+              setValue("categoryId", "");
             }
           }}
+          defaulValue={{ label: "gunung", value: 1 }}
           onCreateOption={onHandleCreate}
           options={options}
           value={
             options
-              ? options.find((option) => option.value === field.value)
+              ? options.find((option) => {
+                  console.log("SELECT", select);
+                  console.log(option.value === select);
+                  return option.value === select;
+                })
               : ""
           }
         />

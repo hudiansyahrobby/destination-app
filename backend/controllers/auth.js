@@ -21,7 +21,10 @@ exports.register = catchAsync(async (req, res, next) => {
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
-  const { user, refreshToken, accessToken } = loginUser({ email, password });
+  const { user, refreshToken, accessToken } = await authService.loginUser({
+    email,
+    password,
+  });
 
   res.cookie("jwt", refreshToken, { httpOnly: true });
 

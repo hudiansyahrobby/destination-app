@@ -23,7 +23,6 @@ export default class Carousel extends Component<{ images: string[] }> {
         },
       ],
     };
-    console.log("PROPS", this.props.images);
 
     return (
       <Box>

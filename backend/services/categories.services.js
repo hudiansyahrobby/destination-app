@@ -8,9 +8,7 @@ const createNewCategory = async (name) => {
       name,
     },
   });
-  console.log("CREATED", created);
   if (!created) {
-    console.log("HAHAHHA");
     throw new AppError(
       `Category with name ${name} is already exist`,
       400,

@@ -1,4 +1,4 @@
-import { Table, Box, Input, Button, IconButton } from "@chakra-ui/react";
+import { Box, IconButton, Input, Table } from "@chakra-ui/react";
 import React from "react";
 import {
   BsChevronDoubleLeft,
@@ -7,11 +7,11 @@ import {
   BsChevronRight,
 } from "react-icons/bs";
 import {
-  useTable,
-  useSortBy,
-  usePagination,
-  useGlobalFilter,
   useAsyncDebounce,
+  useGlobalFilter,
+  usePagination,
+  useSortBy,
+  useTable,
 } from "react-table";
 import TableBody from "./TableBody";
 import TableHead from "./TableHead";
@@ -38,87 +38,11 @@ function GlobalFilter({ globalFilter, setGlobalFilter }: any) {
   );
 }
 
-const TableItem = () => {
-  const data = React.useMemo(
-    () => [
-      {
-        col1: "Hello",
-        col2: "World",
-      },
-      {
-        col1: "react-table",
-        col2: "rocks",
-      },
-      {
-        col1: "whatever",
-        col2: "you want",
-      },
-      {
-        col1: "whatever",
-        col2: "you want",
-      },
-      {
-        col1: "whatever",
-        col2: "you want",
-      },
-      {
-        col1: "whatever",
-        col2: "you want",
-      },
-      {
-        col1: "whatever",
-        col2: "you want",
-      },
-      {
-        col1: "whatever",
-        col2: "you want",
-      },
-      {
-        col1: "whatever",
-        col2: "you want",
-      },
-      {
-        col1: "whatever",
-        col2: "you want",
-      },
-      {
-        col1: "whatever",
-        col2: "you want",
-      },
-      {
-        col1: "whatever",
-        col2: "you want",
-      },
-      {
-        col1: "whatever",
-        col2: "you want",
-      },
-      {
-        col1: "whatever",
-        col2: "you want",
-      },
-      {
-        col1: "whatever",
-        col2: "you want",
-      },
-    ],
-    []
-  );
-
-  const columns: Array<any> = React.useMemo(
-    () => [
-      {
-        Header: "Column 1",
-        accessor: "col1", // accessor is the "key" in the data
-      },
-      {
-        Header: "Column 2",
-        accessor: "col2",
-      },
-    ],
-    []
-  );
-
+interface TableItemProps {
+  columns: any[];
+  data: any[];
+}
+const TableItem: React.FC<TableItemProps> = ({ columns, data }) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -140,7 +64,7 @@ const TableItem = () => {
     {
       columns,
       data,
-      initialState: { pageIndex: 0 },
+      initialState: { pageIndex: 0 }, // Pass our hoisted table state
     },
     useGlobalFilter,
     useSortBy,

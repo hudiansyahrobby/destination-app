@@ -1,7 +1,9 @@
 export interface DestinationData {
+  id: number;
   name: string;
   city: string;
   province: string;
   description: string;
-  images: Array<string>;
+  categoryId: string;
+  images: any;
 }

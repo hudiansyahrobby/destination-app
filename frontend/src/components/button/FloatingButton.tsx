@@ -1,4 +1,4 @@
-import { Box, Button, chakra, Flex, IconButton } from "@chakra-ui/react";
+import { chakra, IconButton } from "@chakra-ui/react";
 import React from "react";
 
 interface FloatingButtonProps {
@@ -17,7 +17,8 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({ icon, onClick }) => {
       right="20px"
       bottom="20px"
       rounded="full"
-      aria-label="Search database"
+      aria-label="floating button"
+      onClick={onClick}
       icon={<ButtonIcon fontSize="24px" />}
     />
   );

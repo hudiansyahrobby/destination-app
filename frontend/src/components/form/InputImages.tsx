@@ -1,73 +1,101 @@
 import {
+  Box,
+  Button,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Grid,
+  Image,
 } from "@chakra-ui/react";
-import { useField, useFormikContext } from "formik";
 import React, { InputHTMLAttributes } from "react";
-import { ImagePreviewer } from "react-file-utils";
+import {
+  UseFormGetValues,
+  UseFormRegisterReturn,
+  UseFormSetValue,
+} from "react-hook-form";
+import { FaCamera } from "react-icons/fa";
+import { DestinationData } from "../../interfaces/DestinationInterface";
 
 type InputImagesProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   name: string;
+  error: string | undefined;
+  register: UseFormRegisterReturn;
+  setValue: UseFormSetValue<DestinationData>;
+  getValue: UseFormGetValues<DestinationData>;
 };
 
-const InputImages: React.FC<InputImagesProps> = (props) => {
-  const [field, { error, touched }] = useField(props);
-  const { name, label } = props;
-  const { setFieldValue } = useFormikContext();
-
-  function uploadSingleFile(e: React.ChangeEvent<HTMLInputElement>) {
+const InputImages: React.FC<InputImagesProps> = React.memo((props) => {
+  const { name, label, error, setValue, getValue } = props;
+  const currentValue = getValue("images") || [];
+  const images = [...currentValue];
+  function uploadFiles(e: React.ChangeEvent<HTMLInputElement>) {
     if (!e.target.files) {
       return;
     }
 
-    setFieldValue(field.name, [
-      ...field.value,
-      URL.createObjectURL(e.target.files[0]),
-    ]);
-  }
-
-  function upload(e: React.FormEvent) {
-    e.preventDefault();
-    console.log(field.value);
-  }
-
-  function deleteFile(_index: number) {
-    const s = field.value.filter((_: any, index: number) => index !== _index);
-    setFieldValue(field.name, s);
+    setValue("images", [e.target.files]);
   }
 
   return (
-    <FormControl isInvalid={!!error && !!touched}>
-      <Grid templateColumns="repeat(2, 1fr)" gap={6}>
-        {field.value?.length > 0 &&
-          field.value?.map((item: any, index: number) => {
-            return (
-              <div key={item}>
-                <img
-                  src="https://www.positronx.io/wp-content/uploads/2019/09/react-multiple-images-upload-preview-6642-02.png"
-                  alt=""
-                />
-                <button type="button" onClick={() => deleteFile(index)}>
-                  delete
-                </button>
-              </div>
-            );
+    <FormControl isInvalid={!!error}>
+      <FormLabel htmlFor={name}>{label}</FormLabel>
+      <Grid templateColumns="repeat(2, 1fr)" gap={6} my="4">
+        {images?.length > 0 &&
+          images?.map((items: any, index: number) => {
+            return [...items].map((item: any, index: number) => {
+              return (
+                <Box
+                  key={index}
+                  position="relative"
+                  borderWidth="thick"
+                  borderColor="gray.200"
+                  borderRadius="lg"
+                  overflow="hidden"
+                >
+                  <Image
+                    src={URL.createObjectURL(item)}
+                    alt=""
+                    height="48"
+                    width="full"
+                    backgroundSize="cover"
+                  />
+                </Box>
+              );
+            });
           })}
       </Grid>
-      <FormLabel htmlFor={name}>{label}</FormLabel>
-      <input
-        type="file"
-        // disabled={file.length === 5}
-        className="form-control"
-        onChange={uploadSingleFile}
-      />
+      <FormControl
+        as="label"
+        width="full"
+        display="flex"
+        justifyContent="center"
+        py={2}
+        alignItems="center"
+        borderColor="#22c35e"
+        borderWidth="thin"
+        borderRadius="lg"
+        fontWeight="bold"
+        cursor="pointer"
+      >
+        <input
+          style={{ display: "none" }}
+          type="file"
+          accept="image/*"
+          multiple
+          // disabled={field.value?.length === 5}
+          className="form-control"
+          onChange={uploadFiles}
+        />
+        <Box mr="2">
+          <FaCamera />
+        </Box>{" "}
+        Upload Images
+      </FormControl>
 
       <FormErrorMessage>{error}</FormErrorMessage>
     </FormControl>
   );
-};
+});
 
 export default InputImages;

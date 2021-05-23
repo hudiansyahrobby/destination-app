@@ -15,6 +15,7 @@ const destinationRoute = require("./routes/destination");
 const favoriteRoute = require("./routes/favorite");
 const commentRoute = require("./routes/comment");
 const categoryRoute = require("./routes/category");
+const AppError = require("./errorHandler/AppError");
 
 const app = express();
 

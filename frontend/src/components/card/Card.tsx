@@ -1,6 +1,7 @@
-import { Box, Button, Image, Tag, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Tag, VStack } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
+import { capitalizeEachWord } from "../../helpers/capitalizeEachWord";
 import Paragraph from "../typography/Paragraph";
 import Title from "../typography/Title";
 
@@ -15,7 +16,6 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({
   id,
   name,
-  city,
   province,
   images,
   description,
@@ -36,12 +36,11 @@ const Card: React.FC<CardProps> = ({
             {province}
           </Tag>
           <Title>
-            <Link to={`/destination/${id}`}>{name}</Link>
+            <Link to={`/destination/${id}`}>{capitalizeEachWord(name)}</Link>
           </Title>
-          <Paragraph>{description}</Paragraph>
-          <Button display="block" w="full" textAlign="center" color="teal">
-            <Link to={`/destination/${id}`}>See Detail</Link>
-          </Button>
+          <Flex flexDirection="column" minHeight="full" position="relative">
+            <Paragraph>{description}</Paragraph>
+          </Flex>
         </VStack>
       </Box>
     </Box>

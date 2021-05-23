@@ -6,7 +6,6 @@ const searchQuery = getQuery("search");
 
 const fetchDestinations = ({ pageParam = 0 }) => {
   if (searchQuery) {
-    console.log("HAHAHAH", searchQuery);
     return getAllDestinations(pageParam, searchQuery);
   }
   return getAllDestinations(pageParam);

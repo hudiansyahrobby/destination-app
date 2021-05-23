@@ -1,19 +1,25 @@
 import axios from "../axios";
-import { DestinationData } from "../interfaces/DestinationInterface";
 
-export const addDestination = async (destinationData: DestinationData) => {
-  await axios.post("/destinations", destinationData);
+export const addDestination = async (destinationData: any) => {
+  const { data } = await axios.post("/destinations", destinationData, {
+    headers: {
+      "content-type": "multipart/form-data",
+    },
+  });
+  return data;
 };
 
-export const updateDestination = async (
-  destinationData: DestinationData,
-  id: number
-) => {
-  await axios.put(`/destinations/${id}`, destinationData);
+export const updateDestination = async (destinationData: any) => {
+  const { data } = await axios.put(
+    `/destinations/${destinationData.id}`,
+    destinationData
+  );
+  return data;
 };
 
 export const deleteDestination = async (id: number) => {
-  await axios.delete(`/destinations/${id}`);
+  const { data } = await axios.delete(`/destinations/${id}`);
+  return data;
 };
 
 export const getAllDestinations = async (page = 0, title?: string) => {
@@ -22,7 +28,6 @@ export const getAllDestinations = async (page = 0, title?: string) => {
     endpoint += `&title=${title}`;
   }
   const { data } = await axios.get(endpoint);
-  console.log("DAAT", data);
   return data.destinations;
 };
 

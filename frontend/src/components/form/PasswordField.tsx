@@ -1,5 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import React from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { FaLock } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
@@ -9,14 +10,18 @@ interface PasswordFieldProps {
   label: string;
   name: string;
   placeholder: string;
+  error: string | undefined;
+  register: UseFormRegisterReturn;
 }
 
 const PasswordField: React.FC<PasswordFieldProps> = (props) => {
+  const { register, ...rest } = props;
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   return (
     <InputField
-      {...props}
+      register={register}
+      {...rest}
       type={show ? "text" : "password"}
       leftIcon={<FaLock />}
       rightIcon={

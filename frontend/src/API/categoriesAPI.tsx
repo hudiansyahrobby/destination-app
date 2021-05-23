@@ -13,7 +13,6 @@ export const getCategoryById = async (categoryId: number) => {
 
 export const getAllCategories = async () => {
   const { data } = await axios.get("/categories");
-  console.log("ASD", data);
   return data.data;
 };
 
@@ -25,6 +24,6 @@ export const updateCategoryById = async (categoryData: any) => {
 };
 
 export const deleteCategoryById = async (categoryId: number) => {
-  const { data } = await axios.put(`/categories/${categoryId}`);
+  const { data } = await axios.delete(`/categories/${categoryId}`);
   return data;
 };

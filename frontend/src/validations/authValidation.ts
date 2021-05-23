@@ -21,3 +21,23 @@ export const registedValidation = Yup.object({
     .oneOf([Yup.ref("password"), null], "password does not match")
     .required("password confirmation is required"),
 });
+
+export const changePasswordValidation = Yup.object({
+  password: Yup.string()
+    .min(8, "password must be at least 8 characters")
+    .matches(
+      /^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$/,
+      {
+        message:
+          "password must be at least one uppercase letter, one lowercase letter, one number and one special character",
+      }
+    )
+    .required("password is required"),
+  passwordConfirmation: Yup.string()
+    .oneOf([Yup.ref("password"), null], "password does not match")
+    .required("password confirmation is required"),
+});
+
+export const forgetPasswordValidation = Yup.object({
+  email: Yup.string().email("email is not valid").required("email is required"),
+});

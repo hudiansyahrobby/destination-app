@@ -1,11 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { Field, Form, Formik } from "formik";
 import React from "react";
-import { BiSearchAlt2 } from "react-icons/bi";
-import InputField from "./InputField";
-import { setQuery } from "../../helpers/query";
-import { useHistory } from "react-router";
 import { useQueryClient } from "react-query";
+import { useHistory } from "react-router";
 
 interface SearchBarProps {
   placeholder: string;
@@ -19,7 +15,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder }) => {
   return (
     <Flex flex="1" w="full" ml={10} mr={{ base: 0, md: 10 }}>
       <Box flex="1" w="full">
-        <Formik
+        {/* <Formik
           initialValues={{
             search: "",
           }}
@@ -42,7 +38,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder }) => {
               </Field>
             </Form>
           )}
-        </Formik>
+        </Formik> */}
       </Box>
     </Flex>
   );

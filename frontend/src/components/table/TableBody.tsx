@@ -14,11 +14,11 @@ const TableBody: React.FC<TableBodyProps> = ({
 }) => {
   return (
     <Tbody {...getTableBodyProps()}>
-      {page.map((row: any, i: number) => {
+      {page?.map((row: any, i: number) => {
         prepareRow(row);
         return (
           <Tr {...row.getRowProps()}>
-            {row.cells.map((cell: any) => {
+            {row?.cells?.map((cell: any) => {
               return <Td {...cell.getCellProps()}>{cell.render("Cell")}</Td>;
             })}
           </Tr>

@@ -2,6 +2,7 @@ import { Box, chakra, Tag } from "@chakra-ui/react";
 import React from "react";
 import { GiStarsStack } from "react-icons/gi";
 import { MdLocationOn, MdSettings } from "react-icons/md";
+import { capitalizeEachWord } from "../helpers/capitalizeEachWord";
 import { DestinationData } from "../interfaces/DestinationInterface";
 
 import Rating from "./rating/Rating";
@@ -14,7 +15,6 @@ interface DestinationInfoProps {
 }
 
 const DestinationInfo: React.FC<DestinationInfoProps> = ({ destination }) => {
-  console.log("DESTANTON", destination);
   const LocationIcon = chakra(MdLocationOn);
   const StarStackIcon = chakra(GiStarsStack);
   const CategoryIcon = chakra(MdSettings);
@@ -22,7 +22,8 @@ const DestinationInfo: React.FC<DestinationInfoProps> = ({ destination }) => {
     <>
       <TextWithIcon text="Location" icon={LocationIcon}>
         <Tag color="teal" fontWeight="bold">
-          {destination.city} - {destination.province}
+          {capitalizeEachWord(destination.city)} -{" "}
+          {capitalizeEachWord(destination.province)}
         </Tag>
       </TextWithIcon>
 

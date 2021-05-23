@@ -4,7 +4,6 @@ import Loading from "./components/Loading";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import AdminRoute from "./hooks/AdminRoute";
-import AddCategory from "./pages/AddCategory";
 
 const Home = React.lazy(() => import("./pages/Home"));
 const Login = React.lazy(() => import("./pages/Login"));
@@ -17,6 +16,11 @@ const AddDestination = React.lazy(() => import("./pages/AddDestination"));
 const AdminDashboard = React.lazy(() => import("./pages/AdminDashboard"));
 const AdminCategories = React.lazy(() => import("./pages/AdminCategories"));
 const Unauthorized = React.lazy(() => import("./pages/Unauthorized"));
+const AddCategory = React.lazy(() => import("./pages/AddCategory"));
+const AdminDestination = React.lazy(() => import("./pages/AdminDestination"));
+const FavoriteDestination = React.lazy(() =>
+  import("./pages/FavoriteDestination")
+);
 
 const App: React.FC = () => {
   const queryClient = new QueryClient();
@@ -34,16 +38,6 @@ const App: React.FC = () => {
             />
 
             <AdminRoute
-              path="/admin/destinations/create"
-              component={AddDestination}
-            />
-
-            <AdminRoute
-              path="/admin/destinations/edit:id"
-              component={AddDestination}
-            />
-
-            <AdminRoute
               exact
               path="/admin/categories/create"
               component={AddCategory}
@@ -54,6 +48,28 @@ const App: React.FC = () => {
               path="/admin/categories/edit/:id"
               component={AddCategory}
             />
+
+            <AdminRoute
+              exact
+              path="/admin/destinations"
+              component={AdminDestination}
+            />
+
+            <AdminRoute
+              path="/admin/destinations/create"
+              component={AddDestination}
+            />
+
+            <AdminRoute
+              path="/admin/destinations/edit/:id"
+              component={AddDestination}
+            />
+
+            <AdminRoute
+              path="/favorite-destination"
+              component={FavoriteDestination}
+            />
+
             <Route exact path="/forget-password" component={ForgetPassword} />
             <Route path="/forget-password/:token" component={ChangePassword} />
             <Route path="/destination/:id" component={DestinationDetail} />

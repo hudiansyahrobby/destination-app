@@ -1,5 +1,4 @@
-import { Box, FormErrorMessage, FormLabel, Textarea } from "@chakra-ui/react";
-import { useField } from "formik";
+import { Box } from "@chakra-ui/react";
 import React, { TextareaHTMLAttributes } from "react";
 
 type TextAreaFieldProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
@@ -9,19 +8,9 @@ type TextAreaFieldProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
 };
 
 const TextAreaField: React.FC<TextAreaFieldProps> = (props) => {
-  const [field, { error, touched }] = useField(props);
-  const { name, label, placeholder } = props;
-
-  let [value, setValue] = React.useState("");
-
-  let handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    let inputValue = e.target.value;
-    setValue(inputValue);
-  };
-
   return (
     <Box>
-      <FormLabel htmlFor={name}>{label}</FormLabel>
+      {/* <FormLabel htmlFor={name}>{label}</FormLabel>
       <Textarea
         {...field}
         value={value}
@@ -32,7 +21,7 @@ const TextAreaField: React.FC<TextAreaFieldProps> = (props) => {
         height="150px"
         isInvalid={!!error && !!touched}
       />
-      <FormErrorMessage>{error}</FormErrorMessage>
+      <FormErrorMessage>{error}</FormErrorMessage> */}
     </Box>
   );
 };

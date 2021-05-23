@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Heading, VStack } from "@chakra-ui/react";
+import { Box, Heading, useToast, VStack } from "@chakra-ui/react";
 import { IoMdInformationCircle } from "react-icons/io";
 import { FaComments, FaMapMarkedAlt } from "react-icons/fa";
 
@@ -14,20 +14,56 @@ import useDestination from "../hooks/useDestination";
 import { useParams } from "react-router";
 import Loading from "../components/Loading";
 import { DestinationData } from "../interfaces/DestinationInterface";
+import AlertMessage from "../components/AlertMessage";
+import Wrapper from "../components/shared/Wrapper";
+import useToggleFavorite from "../hooks/favorites/useToggleFavorite";
+import { capitalizeEachWord } from "../helpers/capitalizeEachWord";
 
 const DestinationDetail = () => {
   const { id } = useParams() as any;
 
   const { data, isLoading, isError, error } = useDestination(id);
 
+  const { mutateAsync } = useToggleFavorite();
+
+  const customError: any = error;
+  const getError = customError?.response?.data?.message;
+
   const destination: DestinationData = data;
+
+  const toast = useToast();
+
+  const toggleFavorite = async (id: number) => {
+    await mutateAsync(id, {
+      onSuccess: (data) => {
+        toast({
+          title: "Favorite Item",
+          description: data.message,
+          status: "success",
+          position: "bottom",
+          duration: 2000,
+          isClosable: true,
+        });
+      },
+    });
+  };
 
   if (isLoading) {
     return <Loading />;
   }
 
   if (isError) {
-    return <Heading>Error</Heading>;
+    return (
+      <Wrapper size="sm">
+        <Box mb="14">
+          <AlertMessage
+            status="error"
+            title="Something Went Wrong"
+            description={getError}
+          />
+        </Box>
+      </Wrapper>
+    );
   }
 
   const items = [
@@ -53,7 +89,7 @@ const DestinationDetail = () => {
         <Carousel images={destination.images} />
         <VStack mx={10} align="flex-start" spacing="15px" mt="50px">
           <Box ml="5px">
-            <Title>{destination.name}</Title>
+            <Title>{capitalizeEachWord(destination.name)}</Title>
           </Box>
           <DestinationInfo destination={destination} />
         </VStack>
@@ -61,7 +97,7 @@ const DestinationDetail = () => {
       <Box my="50px" mx={10}>
         <TabItems items={items} />
       </Box>
-      <FloatingButton icon={MdFavorite} onClick={() => console.log("HAHA")} />
+      <FloatingButton icon={MdFavorite} onClick={() => toggleFavorite(id)} />
     </Layout>
   );
 };

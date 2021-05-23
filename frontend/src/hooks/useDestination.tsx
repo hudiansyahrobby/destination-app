@@ -12,6 +12,7 @@ const useDestination = (destinationId: number) => {
           .getQueryData("destinations")
           ?.find((destination: any) => destination.id === destinationId);
       },
+      enabled: !!destinationId,
     }
   );
 };

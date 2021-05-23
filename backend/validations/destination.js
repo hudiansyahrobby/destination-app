@@ -38,6 +38,13 @@ const destination = {
       "string.min": "description shoult be at least 50 characters",
       "any.required": `description is a required field`,
     }),
+
+    categoryId: Joi.number().required().messages({
+      "string.base": `categoryId should be a type of number`,
+      "string.empty": `categoryId cannot be an empty field`,
+      "any.required": `categoryId is a required field`,
+    }),
+
     images: Joi.array().items(Joi.string().required()).messages({
       "string.base": `images should be a type of string`,
       "string.empty": `images cannot be an empty field`,

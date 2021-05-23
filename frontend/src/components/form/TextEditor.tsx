@@ -1,23 +1,25 @@
+import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/react";
+import React, { InputHTMLAttributes } from "react";
 import {
-  Box,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-} from "@chakra-ui/react";
-import { useField } from "formik";
-import React, { InputHTMLAttributes, useState } from "react";
+  UseFormGetValues,
+  UseFormRegisterReturn,
+  UseFormSetValue,
+} from "react-hook-form";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { DestinationData } from "../../interfaces/DestinationInterface";
 
 type TextEditorProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   name: string;
   placeholder: string;
+  error: string | undefined;
+  register: UseFormRegisterReturn;
+  setValue: UseFormSetValue<any>;
+  getValue: UseFormGetValues<DestinationData>;
 };
 
 const TextEditor: React.FC<TextEditorProps> = (props) => {
-  const [value, setValue] = useState("");
-
   const modules = {
     toolbar: [
       [{ header: [1, 2, false] }],
@@ -47,17 +49,27 @@ const TextEditor: React.FC<TextEditorProps> = (props) => {
     "image",
   ];
 
-  const [field, { error, touched }] = useField(props);
-  const { name, label, placeholder } = props;
+  const {
+    name,
+    label,
+    placeholder,
+    error,
+    register,
+    setValue,
+    getValue,
+  } = props;
 
+  const defaultValue = getValue("description") || "";
   return (
-    <FormControl isInvalid={!!error && !!touched}>
+    <FormControl isInvalid={!!error}>
       <FormLabel htmlFor={name}>{label}</FormLabel>
       <ReactQuill
-        {...field}
         theme="snow"
-        value={value}
-        onChange={setValue}
+        onChange={(value) => {
+          setValue("description", value);
+        }}
+        defaultValue={defaultValue}
+        value={defaultValue || ""}
         modules={modules}
         formats={formats}
         placeholder={placeholder}

@@ -4,6 +4,8 @@ const uploadFiles = require("../helpers/initMulter");
 
 exports.uploadImages = (req, res, next) => {
   uploadFiles(req, res, (err) => {
+    console.log("BODY", req.body);
+    console.log("REQ", req.files);
     if (err instanceof multer.MulterError) {
       if (err.code === "LIMIT_UNEXPECTED_FILE") {
         return res
@@ -33,7 +35,7 @@ exports.resizeImages = async (req, res, next) => {
 
       const newFilenameOnJPG = `${filename}-${Date.now()}.jpeg`;
       const newFilenameOnWebp = `${filename}-${Date.now()}.webp`;
-
+      console.log("FFFILE", file);
       await sharp(file.buffer)
         .resize(640, 320)
         .toFormat("jpeg")

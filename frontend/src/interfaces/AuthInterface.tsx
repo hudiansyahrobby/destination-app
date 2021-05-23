@@ -9,3 +9,10 @@ export interface LoginData {
   email: string;
   password: string;
 }
+
+export type ChangePasswordData = Pick<
+  RegisterData,
+  "password" | "passwordConfirmation"
+>;
+
+export type ForgetPasswordData = Pick<LoginData, "email">;

@@ -3,6 +3,7 @@ const multer = require("multer");
 const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req, file, cb) => {
+  console.log("IMAGES : ", file);
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
   } else {
